@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class LinkService {
     private Map<Long, Link> links = new HashMap<>();
@@ -21,23 +22,18 @@ public class LinkService {
     }
 
     public Link updateLink(Long id, Link updateSource) {
-        Link link = links.get(id);
-
-        if (link == null) {
-            throw new LinkNotFoundException(id);
-        }
-
+        Link link = findLink(id);
         link.changeWith(updateSource);
         return link;
     }
 
     public Link getLink(Long id) {
-        Link link = links.get(id);
-
-        if (link == null) {
-            throw new LinkNotFoundException(id);
-        }
-
+        Link link = findLink(id);
         return link;
+    }
+
+    private Link findLink(Long id) {
+        return Optional.ofNullable(links.get(id))
+                .orElseThrow(() -> new LinkNotFoundException(id));
     }
 }
