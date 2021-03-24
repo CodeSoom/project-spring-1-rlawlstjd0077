@@ -55,6 +55,11 @@ public class Link {
         this.type = type;
     }
 
+    /**
+     * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
+     *
+     * @param source 링크 수정 정보
+     */
     public void changeWith(Link source) {
         this.title = source.getTitle();
         this.linkURL = source.getLinkURL();
