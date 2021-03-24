@@ -13,6 +13,7 @@ class LinkServiceTest {
 
     private LinkService linkService = new LinkService();
     private static final Link LINK = Link.builder()
+            .id(0L)
             .title("스프링 부트 문서")
             .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
             .category("Spring")
@@ -88,6 +89,10 @@ class LinkServiceTest {
                     .description("This is the official documentation for Spring Boot.")
                     .build();
 
+            @BeforeEach
+            void setUp() {
+                linkService.createLink(LINK);
+            }
 
             @Test
             @DisplayName("주어진 id와 일치하는 링크를 수정한 뒤 반환한다.")

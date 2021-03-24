@@ -1,5 +1,6 @@
 package com.jinseong.soft.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Link {
     @Id
     @GeneratedValue
@@ -45,15 +48,6 @@ public class Link {
      */
     //TODO: Enum 으로 변경 필요
     private String type;
-
-    @Builder
-    public Link(String title, String linkURL, String description, String category, String type) {
-        this.title = title;
-        this.linkURL = linkURL;
-        this.description = description;
-        this.category = category;
-        this.type = type;
-    }
 
     /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
