@@ -1,6 +1,7 @@
 package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.errors.LinkNotFoundException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LinkServiceTest {
 
@@ -20,6 +22,7 @@ class LinkServiceTest {
             .type("Document")
             .description("스프링 부트에 관한 공식 문서이다.")
             .build();
+    private static final Long NOT_EXIST_ID = 1000L;
 
     @Nested
     @DisplayName("getLinks()")
@@ -76,18 +79,18 @@ class LinkServiceTest {
     @Nested
     @DisplayName("updateLink()")
     class Describe_updateKLink {
+        Link updateSource = Link.builder()
+                .title("SpringBoot Document")
+                .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
+                .category("SpringBoot")
+                .type("Document")
+                .description("This is the official documentation for Spring Boot.")
+                .build();
 
         @Nested
         @DisplayName("존재하는 링크 id가 주어진다면")
         class Context_exist_link_id {
             Long givenLinkId = LINK.getId();
-            Link updateSource = Link.builder()
-                    .title("SpringBoot Document")
-                    .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
-                    .category("SpringBoot")
-                    .type("Document")
-                    .description("This is the official documentation for Spring Boot.")
-                    .build();
 
             @BeforeEach
             void setUp() {
@@ -104,6 +107,18 @@ class LinkServiceTest {
                 assertThat(link.getCategory()).isEqualTo(updateSource.getCategory());
                 assertThat(link.getType()).isEqualTo(updateSource.getType());
                 assertThat(link.getDescription()).isEqualTo(updateSource.getDescription());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 링크 id가 주어진다면")
+        class Context_not_exist_link_id {
+            Long givenLinkID = NOT_EXIST_ID;
+
+            @Test
+            @DisplayName("링크를 찾을 수 없다는 예외를 던진다")
+            void it_returns_link_not_found_exception() {
+                assertThrows(LinkNotFoundException.class, () -> linkService.updateLink(givenLinkID, updateSource));
             }
         }
     }

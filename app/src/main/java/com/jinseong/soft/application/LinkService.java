@@ -1,6 +1,7 @@
 package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.errors.LinkNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,11 @@ public class LinkService {
 
     public Link updateLink(Long id, Link updateSource) {
         Link link = links.get(id);
+        
+        if (link == null) {
+            throw new LinkNotFoundException(id);
+        }
+
         link.changeWith(updateSource);
         return link;
     }
