@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinkService {
+    private List<Link> links = new ArrayList<>();
+
     public List<Link> getLinks() {
-        return new ArrayList<>();
+        return links;
     }
 }
