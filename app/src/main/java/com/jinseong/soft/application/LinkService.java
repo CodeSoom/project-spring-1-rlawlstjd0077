@@ -22,12 +22,22 @@ public class LinkService {
 
     public Link updateLink(Long id, Link updateSource) {
         Link link = links.get(id);
-        
+
         if (link == null) {
             throw new LinkNotFoundException(id);
         }
 
         link.changeWith(updateSource);
+        return link;
+    }
+
+    public Link getLink(Long id) {
+        Link link = links.get(id);
+
+        if (link == null) {
+            throw new LinkNotFoundException(id);
+        }
+
         return link;
     }
 }

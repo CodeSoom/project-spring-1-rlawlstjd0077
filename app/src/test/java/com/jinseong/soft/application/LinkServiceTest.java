@@ -59,6 +59,45 @@ class LinkServiceTest {
     }
 
     @Nested
+    @DisplayName("getLink()")
+    class Describe_getLink {
+        @Nested
+        @DisplayName("존재하는 링크 id가 주어진다면")
+        class Context_exist_link_id {
+            Long givenLinkId = LINK.getId();
+
+            @BeforeEach
+            void setUp() {
+                linkService.createLink(LINK);
+            }
+
+            @Test
+            @DisplayName("주어진 id와 일치하는 링크를 수정한 뒤 반환한다.")
+            void it_returns_updated_link() {
+                Link link = linkService.getLink(givenLinkId);
+
+                assertThat(link.getTitle()).isEqualTo(LINK.getTitle());
+                assertThat(link.getLinkURL()).isEqualTo(LINK.getLinkURL());
+                assertThat(link.getCategory()).isEqualTo(LINK.getCategory());
+                assertThat(link.getType()).isEqualTo(LINK.getType());
+                assertThat(link.getDescription()).isEqualTo(LINK.getDescription());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 링크 id가 주어진다면")
+        class Context_not_exist_link_id {
+            Long givenLinkID = NOT_EXIST_ID;
+
+            @Test
+            @DisplayName("링크를 찾을 수 없다는 예외를 던진다")
+            void it_returns_link_not_found_exception() {
+                assertThrows(LinkNotFoundException.class, () -> linkService.getLink(givenLinkID));
+            }
+        }
+    }
+
+    @Nested
     @DisplayName("createLink()")
     class Describe_createLink {
         Link givenLink = LINK;
@@ -122,4 +161,6 @@ class LinkServiceTest {
             }
         }
     }
+
+
 }
