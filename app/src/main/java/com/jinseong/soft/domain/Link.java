@@ -41,7 +41,7 @@ public class Link {
     private String category;
 
     /**
-     * 링크의 type (Youtube, Blog, Book, Resource)
+     * 링크의 type (Youtube, Blog, Book, Resource, Document)
      */
     //TODO: Enum 으로 변경 필요
     private String type;
