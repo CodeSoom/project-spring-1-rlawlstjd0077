@@ -10,4 +10,9 @@ public class LinkService {
     public List<Link> getLinks() {
         return links;
     }
+
+    public Link createLink(Link link) {
+        links.add(link);
+        return link;
+    }
 }
