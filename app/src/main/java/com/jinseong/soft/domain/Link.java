@@ -54,4 +54,8 @@ public class Link {
         this.category = category;
         this.type = type;
     }
+
+    public void changeWith(Link source) {
+
+    }
 }
