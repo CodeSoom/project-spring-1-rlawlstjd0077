@@ -15,4 +15,8 @@ public class LinkService {
         links.add(link);
         return link;
     }
+
+    public Link updateLink(Long id, Link updateSource) {
+        return updateSource;
+    }
 }

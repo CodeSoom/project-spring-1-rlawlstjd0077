@@ -71,4 +71,35 @@ class LinkServiceTest {
             assertThat(link.getDescription()).isEqualTo(givenLink.getDescription());
         }
     }
+
+    @Nested
+    @DisplayName("updateLink()")
+    class Describe_updateKLink {
+
+        @Nested
+        @DisplayName("존재하는 링크 id가 주어진다면")
+        class Context_exist_link_id {
+            Long givenLinkId = LINK.getId();
+            Link updateSource = Link.builder()
+                    .title("SpringBoot Document")
+                    .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
+                    .category("SpringBoot")
+                    .type("Document")
+                    .description("This is the official documentation for Spring Boot.")
+                    .build();
+
+
+            @Test
+            @DisplayName("주어진 id와 일치하는 링크를 수정한 뒤 반환한다.")
+            void it_returns_updated_link() {
+                Link link = linkService.updateLink(givenLinkId, updateSource);
+
+                assertThat(link.getTitle()).isEqualTo(updateSource.getTitle());
+                assertThat(link.getLinkURL()).isEqualTo(updateSource.getLinkURL());
+                assertThat(link.getCategory()).isEqualTo(updateSource.getCategory());
+                assertThat(link.getType()).isEqualTo(updateSource.getType());
+                assertThat(link.getDescription()).isEqualTo(updateSource.getDescription());
+            }
+        }
+    }
 }
