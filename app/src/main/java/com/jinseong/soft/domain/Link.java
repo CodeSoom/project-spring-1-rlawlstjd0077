@@ -56,6 +56,10 @@ public class Link {
     }
 
     public void changeWith(Link source) {
-
+        this.title = source.getTitle();
+        this.linkURL = source.getLinkURL();
+        this.description = source.getDescription();
+        this.type = source.getType();
+        this.category = source.getCategory();
     }
 }
