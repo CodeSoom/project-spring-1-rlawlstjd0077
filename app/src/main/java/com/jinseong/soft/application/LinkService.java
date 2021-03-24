@@ -1,24 +1,28 @@
 package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.errors.LinkNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class LinkService {
-    private Map<Long, Link> links = new HashMap<>();
-    private long idCounter = 0L;
+    private final LinkRepository linkRepository;
+
+    public LinkService(LinkRepository linkRepository) {
+        this.linkRepository = linkRepository;
+    }
 
     public List<Link> getLinks() {
-        return new ArrayList<>(links.values());
+        return linkRepository.findAll();
     }
 
     public Link createLink(Link link) {
-        links.put(idCounter++, link);
-        return link;
+        return linkRepository.save(link);
     }
 
     public Link updateLink(Long id, Link updateSource) {
@@ -28,18 +32,17 @@ public class LinkService {
     }
 
     public Link getLink(Long id) {
-        Link link = findLink(id);
-        return link;
-    }
-
-    private Link findLink(Long id) {
-        return Optional.ofNullable(links.get(id))
-                .orElseThrow(() -> new LinkNotFoundException(id));
+        return findLink(id);
     }
 
     public Link deleteLink(Long id) {
         Link link = findLink(id);
-        links.remove(id);
+        linkRepository.delete(link);
         return link;
+    }
+
+    private Link findLink(Long id) {
+        return linkRepository.findById(id)
+                .orElseThrow(() -> new LinkNotFoundException(id));
     }
 }

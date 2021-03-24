@@ -1,19 +1,24 @@
 package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.errors.LinkNotFoundException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 class LinkServiceTest {
 
-    private LinkService linkService = new LinkService();
+    private LinkService linkService;
     private static final Link LINK = Link.builder()
             .id(0L)
             .title("스프링 부트 문서")
@@ -22,7 +27,20 @@ class LinkServiceTest {
             .type("Document")
             .description("스프링 부트에 관한 공식 문서이다.")
             .build();
+
     private static final Long NOT_EXIST_ID = 1000L;
+
+    @BeforeEach
+    void setUp() {
+        LinkRepository linkRepository = Mockito.mock(LinkRepository.class);
+        linkService = new LinkService(linkRepository);
+
+        given(linkRepository.findById(LINK.getId()))
+                .willReturn(Optional.of(LINK));
+        given(linkRepository.save(LINK))
+                .willReturn(LINK);
+
+    }
 
     @Nested
     @DisplayName("getLinks()")
@@ -31,6 +49,12 @@ class LinkServiceTest {
         @Nested
         @DisplayName("링크가 존재하지 않을 때")
         class Context_with_no_link {
+
+            @BeforeEach
+            void setUp() {
+                given(linkService.getLinks()).willReturn(Collections.emptyList());
+            }
+
             @Test
             @DisplayName("비어있는 목록을 반환한다")
             void It_returns_empty_list() {
@@ -45,7 +69,7 @@ class LinkServiceTest {
         class Context_with_links {
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK);
+                given(linkService.getLinks()).willReturn(Collections.singletonList(LINK));
             }
 
             @Test
@@ -186,8 +210,6 @@ class LinkServiceTest {
                 assertThat(link.getCategory()).isEqualTo(LINK.getCategory());
                 assertThat(link.getType()).isEqualTo(LINK.getType());
                 assertThat(link.getDescription()).isEqualTo(LINK.getDescription());
-
-                assertThrows(LinkNotFoundException.class, () -> linkService.getLink(givenLinkID));
             }
         }
 
