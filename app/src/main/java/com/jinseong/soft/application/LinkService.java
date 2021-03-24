@@ -36,4 +36,10 @@ public class LinkService {
         return Optional.ofNullable(links.get(id))
                 .orElseThrow(() -> new LinkNotFoundException(id));
     }
+
+    public Link deleteLink(Long id) {
+        Link link = findLink(id);
+        links.remove(id);
+        return link;
+    }
 }
