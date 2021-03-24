@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LinkServiceTest {
 
     private LinkService linkService = new LinkService();
-    private final Link link = Link.builder()
+    private static final Link LINK = Link.builder()
             .title("스프링 부트 문서")
             .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
             .category("Spring")
@@ -41,7 +41,7 @@ class LinkServiceTest {
         class Context_with_links {
             @BeforeEach
             void setUp() {
-                linkService.createLink(link);
+                linkService.createLink(LINK);
             }
 
             @Test
@@ -51,6 +51,24 @@ class LinkServiceTest {
 
                 assertThat(linkList).isNotEmpty();
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("createLink()")
+    class Describe_createLink {
+        Link givenLink = LINK;
+
+        @Test
+        @DisplayName("주어진 링크를 저장한 뒤 반환한다.")
+        void it_returns_saved_link() {
+            Link link = linkService.createLink(givenLink);
+
+            assertThat(link.getTitle()).isEqualTo(givenLink.getTitle());
+            assertThat(link.getLinkURL()).isEqualTo(givenLink.getLinkURL());
+            assertThat(link.getCategory()).isEqualTo(givenLink.getCategory());
+            assertThat(link.getType()).isEqualTo(givenLink.getType());
+            assertThat(link.getDescription()).isEqualTo(givenLink.getDescription());
         }
     }
 }
