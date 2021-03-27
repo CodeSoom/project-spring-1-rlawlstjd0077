@@ -46,9 +46,15 @@ class LinkControllerTest {
         given(linkService.getLink(LinkTestFixture.EXIST_ID)).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.NOT_EXIST_ID))
                 .willThrow(LinkNotFoundException.class);
+
         given(linkService.updateLink(eq(LinkTestFixture.EXIST_ID), any(Link.class)))
                 .willReturn(LinkTestFixture.UPDATE_LINK);
         given(linkService.updateLink(eq(LinkTestFixture.NOT_EXIST_ID), any(Link.class)))
+                .willThrow(LinkNotFoundException.class);
+
+        given(linkService.deleteLink(eq(LinkTestFixture.EXIST_ID)))
+                .willReturn(LinkTestFixture.UPDATE_LINK);
+        given(linkService.deleteLink(eq(LinkTestFixture.NOT_EXIST_ID)))
                 .willThrow(LinkNotFoundException.class);
     }
 
