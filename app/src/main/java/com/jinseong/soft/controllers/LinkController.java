@@ -5,6 +5,7 @@ import com.jinseong.soft.domain.Link;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,4 +59,15 @@ public class LinkController {
         return linkService.createLink(link);
     }
 
+    /**
+     * 대응되는 식별자의 링크를 주어진 링크 정보로 수정한 뒤 응답합니다.
+     *
+     * @param id     링크 식별자
+     * @param source 링크 수정 정보
+     * @return 수정된 링크
+     */
+    @PatchMapping("{id}")
+    public Link updateLink(@PathVariable Long id, @RequestBody Link source) {
+        return linkService.updateLink(id, source);
+    }
 }

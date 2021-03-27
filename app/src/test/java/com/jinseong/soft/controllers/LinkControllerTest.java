@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,6 +45,10 @@ class LinkControllerTest {
         given(linkService.createLink(any(Link.class))).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.EXIST_ID)).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.NOT_EXIST_ID))
+                .willThrow(LinkNotFoundException.class);
+        given(linkService.updateLink(eq(LinkTestFixture.EXIST_ID), any(Link.class)))
+                .willReturn(LinkTestFixture.UPDATE_LINK);
+        given(linkService.updateLink(eq(LinkTestFixture.NOT_EXIST_ID), any(Link.class)))
                 .willThrow(LinkNotFoundException.class);
     }
 

@@ -22,6 +22,4 @@ public class LinkTestFixture {
 
     public static final long EXIST_ID = 0L;
     public static final long NOT_EXIST_ID = 10000L;
-
-
 }
