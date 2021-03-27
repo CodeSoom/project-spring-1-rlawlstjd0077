@@ -21,8 +21,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -80,10 +79,10 @@ class LinkControllerTest {
                 mockMvc.perform(
                         get("/links/{id}", givenLinkId)
                 )
-                        .andExpect(status().isOk())
-                        .andExpect(content().string(containsString(LINK.getTitle())));
+                        .andExpect(status().isNotFound());
 
-                verify(linkService).getLinks();
+                verify(linkService).getLink(givenLinkId);
+
             }
         }
     }
@@ -146,6 +145,50 @@ class LinkControllerTest {
             )
                     .andExpect(status().isCreated())
                     .andExpect(content().string(containsString(LINK.getTitle())));
+        }
+    }
+
+    @Nested
+    @DisplayName("PATCH /links 요청은")
+    class Describe_PATCH {
+        @Nested
+        @DisplayName("존재하는 링크 id가 주어진다면")
+        class Context_with_exist_link_id {
+            long givenLinkId = LinkTestFixture.EXIST_ID;
+            Link updateSource = LinkTestFixture.UPDATE_LINK;
+
+            @Test
+            @DisplayName("OK 코드와 수정된 링크를 응답한다")
+            void It_returns_ok_status_with_updated_link() throws Exception {
+                mockMvc.perform(
+                        patch("/links/{id}", givenLinkId)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(updateSource))
+                )
+                        .andExpect(status().isOk())
+                        .andExpect(content().string(containsString(updateSource.getTitle())));
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 링크 id가 주어진다면")
+        class Context_with_not_exist_link_id {
+            long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
+            Link updateSource = LinkTestFixture.UPDATE_LINK;
+
+            @Test
+            @DisplayName("NOT FOUND 코드를 응답한다")
+            void It_returns_not_found_status() throws Exception {
+                mockMvc.perform(
+                        patch("/links/{id}", givenLinkId)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(updateSource))
+                )
+                        .andExpect(status().isNotFound());
+
+            }
         }
     }
 }
