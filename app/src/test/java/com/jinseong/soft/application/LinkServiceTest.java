@@ -136,13 +136,7 @@ class LinkServiceTest {
     @Nested
     @DisplayName("updateLink()")
     class Describe_updateKLink {
-        Link updateSource = Link.builder()
-                .title("SpringBoot Document")
-                .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
-                .category("SpringBoot")
-                .type("Document")
-                .description("This is the official documentation for Spring Boot.")
-                .build();
+        Link updateSource = LinkTestFixture.UPDATE_LINK;
 
         @Nested
         @DisplayName("존재하는 링크 id가 주어진다면")
@@ -219,4 +213,5 @@ class LinkServiceTest {
             }
         }
     }
+
 }
