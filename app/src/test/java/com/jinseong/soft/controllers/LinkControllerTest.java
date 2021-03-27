@@ -196,4 +196,39 @@ class LinkControllerTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("DELETE /links/{id}")
+    class Describe_DELETE {
+        @Nested
+        @DisplayName("존재하는 링크 id가 주어진다면")
+        class Context_with_exist_link_id {
+            long givenLinkId = LinkTestFixture.EXIST_ID;
+
+            @Test
+            @DisplayName("NO CONTENT 코드를 응답한다")
+            void It_returns_ok_status_with_updated_link() throws Exception {
+                mockMvc.perform(
+                        delete("/links/{id}", givenLinkId)
+                )
+                        .andExpect(status().isNoContent());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 링크 id가 주어진다면")
+        class Context_with_not_exist_link_id {
+            long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
+
+            @Test
+            @DisplayName("NOT FOUND 코드를 응답한다")
+            void It_returns_not_found_status() throws Exception {
+                mockMvc.perform(
+                        delete("/links/{id}", givenLinkId)
+                )
+                        .andExpect(status().isNotFound());
+
+            }
+        }
+    }
 }
