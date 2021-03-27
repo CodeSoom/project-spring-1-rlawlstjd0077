@@ -1,18 +1,13 @@
 package com.jinseong.soft.domain;
 
+import com.jinseong.soft.LinkTestFixture;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LinkTest {
 
-    private final Link link = Link.builder()
-            .title("스프링 부트 문서")
-            .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
-            .category("Spring")
-            .type("Document")
-            .description("스프링 부트에 관한 공식 문서이다.")
-            .build();
+    private final Link link = LinkTestFixture.LINK;
 
     @Test
     void createLinkWithBuilder() {

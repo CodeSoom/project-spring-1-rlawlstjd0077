@@ -1,6 +1,8 @@
 package com.jinseong.soft.controllers;
 
+import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.application.LinkService;
+import com.jinseong.soft.domain.Link;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(LinkController.class)
 class LinkControllerTest {
+
+    private final Link link = LinkTestFixture.LINK;
 
     @MockBean
     LinkService linkService;
@@ -36,7 +40,7 @@ class LinkControllerTest {
         @Nested
         @DisplayName("링크가 존재하지 않는 경우")
         class Context_with_no_link {
-            
+
             @Test
             @DisplayName("OK 상태코드와 빈 링크 목록을 응답한다")
             void It_returns_status_ok_and_empty_list() throws Exception {
