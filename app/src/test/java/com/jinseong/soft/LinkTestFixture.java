@@ -11,4 +11,9 @@ public class LinkTestFixture {
             .type("Document")
             .description("스프링 부트에 관한 공식 문서이다.")
             .build();
+
+    public static final long EXIST_ID = 0L;
+    public static final long NOT_EXIST_ID = 10000L;
+    
+
 }
