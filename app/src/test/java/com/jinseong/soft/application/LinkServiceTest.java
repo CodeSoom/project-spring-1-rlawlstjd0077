@@ -1,5 +1,6 @@
 package com.jinseong.soft.application;
 
+import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.errors.LinkNotFoundException;
@@ -19,14 +20,7 @@ import static org.mockito.BDDMockito.given;
 class LinkServiceTest {
 
     private LinkService linkService;
-    private static final Link LINK = Link.builder()
-            .id(0L)
-            .title("스프링 부트 문서")
-            .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
-            .category("Spring")
-            .type("Document")
-            .description("스프링 부트에 관한 공식 문서이다.")
-            .build();
+    private static final Link LINK = LinkTestFixture.LINK;
 
     private static final Long NOT_EXIST_ID = 1000L;
 
@@ -142,13 +136,7 @@ class LinkServiceTest {
     @Nested
     @DisplayName("updateLink()")
     class Describe_updateKLink {
-        Link updateSource = Link.builder()
-                .title("SpringBoot Document")
-                .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
-                .category("SpringBoot")
-                .type("Document")
-                .description("This is the official documentation for Spring Boot.")
-                .build();
+        Link updateSource = LinkTestFixture.UPDATE_LINK;
 
         @Nested
         @DisplayName("존재하는 링크 id가 주어진다면")
@@ -225,4 +213,5 @@ class LinkServiceTest {
             }
         }
     }
+
 }
