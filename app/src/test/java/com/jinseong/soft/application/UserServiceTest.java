@@ -2,14 +2,29 @@ package com.jinseong.soft.application;
 
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.User;
+import com.jinseong.soft.domain.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 class UserServiceTest {
-    UserService userService = new UserService();
+    UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        userService = new UserService(userRepository);
+
+        User user = UserTestFixture.generateUser();
+
+        given(userRepository.save(any(User.class))).willReturn(user);
+    }
 
     @DisplayName("createUser()")
     @Nested
