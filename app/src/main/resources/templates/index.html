@@ -15,14 +15,23 @@
             <th>링크 URL</th>
             <th>카테고리</th>
             <th>타입</th>
+            <th>수정하기</th>
+            <th>삭제하기</th>
         </tr>
         </thead>
         <tbody id="tbody">
         <tr th:each="link : ${links}">
+            <td id="id" hidden th:value="${link.id}"></td>
             <td><span th:text="${link.title}"> Title </span></td>
             <td><span th:text="${link.linkURL}"> Author </span></td>
             <td><span th:text="${link.category}"> Desc </span></td>
             <td><span th:text="${link.type}"> Desc </span></td>
+            <td>
+                <button id="btn-update">modify</button>
+            </td>
+            <td>
+                <button id="btn-delete">delete</button>
+            </td>
         </tr>
         </tbody>
     </table>
