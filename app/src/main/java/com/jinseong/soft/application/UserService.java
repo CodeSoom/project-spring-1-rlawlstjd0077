@@ -2,6 +2,7 @@ package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
+import com.jinseong.soft.errors.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,7 @@ public class UserService {
      * @return 유저
      */
     private User findUser(Long id) {
-        return userRepository.findByIdAndDeletedIsFalse(id);
+        return userRepository.findByIdAndDeletedIsFalse(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 }

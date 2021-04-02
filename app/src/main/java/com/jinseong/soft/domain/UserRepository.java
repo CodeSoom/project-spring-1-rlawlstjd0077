@@ -1,5 +1,7 @@
 package com.jinseong.soft.domain;
 
+import java.util.Optional;
+
 /**
  * 유저 저장소.
  */
@@ -18,5 +20,5 @@ public interface UserRepository {
      * @param id 유저 식별자
      * @return 유저
      */
-    User findByIdAndDeletedIsFalse(Long id);
+    Optional<User> findByIdAndDeletedIsFalse(Long id);
 }

@@ -4,6 +4,7 @@ import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.errors.UserNotFoundException;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +32,9 @@ class UserServiceTest {
         given(userRepository.save(any(User.class))).willReturn(user);
 
         given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.EXIST_USER_ID)))
-                .willReturn(deletedUser);
+                .willReturn(Optional.of(deletedUser));
+        given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.NOT_EXIST_USER_ID)))
+                .willReturn(Optional.empty());
     }
 
     @DisplayName("createUser()")
