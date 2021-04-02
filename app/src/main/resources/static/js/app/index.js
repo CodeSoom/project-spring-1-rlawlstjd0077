@@ -2,7 +2,6 @@ var main = {
     init : function () {
         var _this = this;
         $('#btn-save').on('click', function () {
-            alert("");
             _this.save();
         });
 
@@ -17,7 +16,7 @@ var main = {
     save : function () {
         var data = {
             title: $('#title').val(),
-            url: $('#url').val(),
+            linkURL: $('#linkURL').val(),
             description: $('#description').val(),
             category: $('#category').val(),
             type: $('#type').val(),
