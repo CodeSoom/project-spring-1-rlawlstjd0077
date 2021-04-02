@@ -18,6 +18,18 @@ public class UserService {
     }
 
     public User deleteUser(Long id) {
-        return null;
+        User user = findUser(id);
+        user.destroy();
+        return user;
+    }
+
+    /**
+     * 전달받은 id와 일치하는 유저를 반환합니다.
+     *
+     * @param id 유저 식별자
+     * @return 유저
+     */
+    private User findUser(Long id) {
+        return userRepository.findByIdAndDeletedIsFalse(id);
     }
 }

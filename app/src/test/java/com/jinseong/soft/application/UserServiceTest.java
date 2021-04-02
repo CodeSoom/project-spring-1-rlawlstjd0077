@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 class UserServiceTest {
@@ -22,8 +23,13 @@ class UserServiceTest {
         userService = new UserService(userRepository);
 
         User user = UserTestFixture.generateUser();
+        User deletedUser = UserTestFixture.generateUser();
+        deletedUser.destroy();
 
         given(userRepository.save(any(User.class))).willReturn(user);
+
+        given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.EXIST_USER_ID)))
+                .willReturn(deletedUser);
     }
 
     @DisplayName("createUser()")
@@ -44,11 +50,13 @@ class UserServiceTest {
     }
 
     @DisplayName("deleteUser()")
+    @Nested
     class Describe_deleteUser {
         @DisplayName("존재하는 user id가 주어진 경우")
         @Nested
         class Context_with_exist_user_id {
             Long givenUserId = UserTestFixture.EXIST_USER_ID;
+
 
             @DisplayName("삭제된 유저를 반환한다")
             @Test
@@ -58,7 +66,7 @@ class UserServiceTest {
                 assertThat(user.getEmail()).isEqualTo(UserTestFixture.EXIST_USER.getEmail());
                 assertThat(user.getName()).isEqualTo(UserTestFixture.EXIST_USER.getName());
                 assertThat(user.getPassword()).isEqualTo(UserTestFixture.EXIST_USER.getPassword());
-                assertThat(user.isDeleted()).isFalse();
+                assertThat(user.isDeleted()).isTrue();
             }
         }
 
