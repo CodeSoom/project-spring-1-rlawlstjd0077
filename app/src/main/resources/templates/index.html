@@ -2,10 +2,33 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>링크 목록</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<p><</p>
+<div class="col-md-12">
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>링크 제목</th>
+            <th>링크 URL</th>
+            <th>카테고리</th>
+            <th>타입</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:each="link : ${links}">
+            <td><span th:text="${link.title}"> Title </span></td>
+            <td><span th:text="${link.linkURL}"> Author </span></td>
+            <td><span th:text="${link.category}"> Desc </span></td>
+            <td><span th:text="${link.type}"> Desc </span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/app/index.js"></script>
 </body>
 </html>
