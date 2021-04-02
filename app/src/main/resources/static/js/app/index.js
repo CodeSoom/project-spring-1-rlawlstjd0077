@@ -2,12 +2,12 @@ var main = {
     init : function () {
         var _this = this;
         $('#btn-update').on('click', function () {
-            _this.update();
+            var id = _this.getSelectedId($(this));
+            window.location.href = '/update-link/' + id;
         });
 
         $('#btn-delete').on('click', function () {
-            var td = $(this).parent().parent();
-            var id = td.find('#id').attr('value')
+            var id = _this.getSelectedId($(this));
             _this.delete(id);
         });
     },
@@ -21,6 +21,10 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
+    },
+    getSelectedId : function (obj) {
+        var td = obj.parent().parent();
+        return td.find('#id').attr('value');
     }
 };
 
