@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Linker!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div>
+    <h2>링크 등록하기</h2>
+</div>
+<div>
+    <form th:action="@{/links}" method="post" enctype='text/plain'>
+        <div class="form-group">
+            <label for="title">링크 제목</label>
+            <input id="title" type="text" class="form-control"
+                   placeholder="링크 제목 .. " aria-describedby="titleHelp" required minlength="3">
+            <small id="titleHelp" class="form-text text-muted">
+                해당 링크를 나타낼 수 있는 제목을 입력해주세요!
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="url">링크 URL</label>
+            <input id="url" type="text" class="form-control"
+                   placeholder="링크 URL .. " aria-describedby="urlHelp" required minlength="3">
+            <small id="urlHelp" class="form-text text-muted">
+                해당 링크의 URL을 입력해주세요!
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="description">링크 설명</label>
+            <textarea class="form-control" id="description" placeholder="링크에 대한 설명 .. "
+                      aria-describedby="descriptionHelp"></textarea>
+            <small id="descriptionHelp" class="form-text text-muted">
+                해당 링크의 설명을 입력해주세요!
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="category">링크 카테고리</label>
+            <textarea class="form-control" id="category" placeholder="링크 Category .. "
+                      aria-describedby="categoryHelp"></textarea>
+            <small id="categoryHelp" class="form-text text-muted">
+                해당 링크의 카테고리를 입력해주세요!
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="type">링크 타입</label>
+            <textarea class="form-control" id="type" placeholder="링크 Type .. "
+                      aria-describedby="typeHelp"></textarea>
+            <small id="typeHelp" class="form-text text-muted">
+                해당 링크의 Type을 입력해주세요!
+            </small>
+        </div>
+
+
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit"
+                    aria-describedby="submitHelp">생성
+            </button>
+        </div>
+    </form>
+</div>
+<script src="/js/app/index.js"></script>
+</body>
+</html>
