@@ -119,7 +119,7 @@ class UserServiceTest {
             @DisplayName("삭제된 유저를 반환한다")
             @Test
             void it_returns_deleted_user() {
-                User user = userService.deleteUser(givenUserId);
+                User user = userService.destroyUser(givenUserId);
 
                 assertThat(user.getEmail()).isEqualTo(UserTestFixture.EXIST_USER.getEmail());
                 assertThat(user.getName()).isEqualTo(UserTestFixture.EXIST_USER.getName());
@@ -136,7 +136,7 @@ class UserServiceTest {
             @DisplayName("유저를 찾을 수 없다는 예외를 반환한다")
             @Test
             void it_returns_user_found_exception() {
-                assertThrows(UserNotFoundException.class, () -> userService.deleteUser(givenUserId));
+                assertThrows(UserNotFoundException.class, () -> userService.destroyUser(givenUserId));
             }
         }
     }

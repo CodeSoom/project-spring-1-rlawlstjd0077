@@ -28,7 +28,7 @@ public class UserService {
     }
 
     @Transactional
-    public User deleteUser(Long id) {
+    public User destroyUser(Long id) {
         User user = findUser(id);
         user.destroy();
         return user;
