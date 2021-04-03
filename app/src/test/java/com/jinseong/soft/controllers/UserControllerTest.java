@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.application.UserService;
 import com.jinseong.soft.dto.UserRegistrationData;
+import com.jinseong.soft.errors.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -41,7 +42,10 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        given(userService.registerUser(any(UserRegistrationData.class))).willReturn(UserTestFixture.EXIST_USER);
+        given(userService.registerUser(any(UserRegistrationData.class)))
+                .willReturn(UserTestFixture.EXIST_USER);
+        given(userService.destroyUser(UserTestFixture.NOT_EXIST_USER_ID))
+                .willThrow(UserNotFoundException.class);
     }
 
 
