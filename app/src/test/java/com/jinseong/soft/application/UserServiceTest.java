@@ -74,6 +74,14 @@ class UserServiceTest {
         @DisplayName("존재하지 않는 user id가 주어진 경우")
         @Nested
         class Context_with_not_exist_user_id {
+            Long givenUserId = UserTestFixture.NOT_EXIST_USER_ID;
+
+            @DisplayName("유저를 찾을 수 없다는 예외를 반환한다")
+            @Test
+            void it_returns_user_found_exception() {
+                User source = UserTestFixture.UPDATE_USER;
+                assertThrows(UserNotFoundException.class, () -> userService.updateUser(givenUserId, source));
+            }
         }
     }
 
