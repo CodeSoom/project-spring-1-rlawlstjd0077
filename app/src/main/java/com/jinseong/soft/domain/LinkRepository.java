@@ -25,15 +25,15 @@ public interface LinkRepository {
     /**
      * 주어진 링크를 저장하고 반환합니다.
      *
-     * @param Link 링크
+     * @param link 링크
      * @return 저장된 링크
      */
-    Link save(Link Link);
+    Link save(Link link);
 
     /**
      * 주어진 링크를 삭제합니다.
      *
-     * @param Link 삭제할 링크
+     * @param link 삭제할 링크
      */
-    void delete(Link Link);
+    void delete(Link link);
 }

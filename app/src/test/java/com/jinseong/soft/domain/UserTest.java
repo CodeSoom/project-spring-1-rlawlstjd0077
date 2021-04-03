@@ -1,5 +1,6 @@
 package com.jinseong.soft.domain;
 
+import com.jinseong.soft.UserTestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,12 +11,7 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        user = User.builder()
-                .id(0L)
-                .email("test@email.com")
-                .name("test")
-                .password("1234")
-                .build();
+        user = UserTestFixture.generateUser();
     }
 
     @Test

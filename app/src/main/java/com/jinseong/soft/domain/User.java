@@ -41,4 +41,9 @@ public class User {
     public void destroy() {
         deleted = true;
     }
+
+    public void changeWith(User source) {
+        this.name = source.getName();
+        this.password = source.getPassword();
+    }
 }
