@@ -54,6 +54,33 @@ class UserServiceTest {
         }
     }
 
+    @DisplayName("updateUser()")
+    @Nested
+    class Describe_updateUser {
+        @DisplayName("존재하는 user id가 주어진 경우")
+        @Nested
+        class Context_with_exist_user_id {
+            Long givenUserId = UserTestFixture.EXIST_USER_ID;
+
+            @DisplayName("수정된 유저를 반환한다")
+            @Test
+            void it_returns_deleted_user() {
+                User source = UserTestFixture.UPDATE_USER;
+                User user = userService.updateUser(givenUserId, source);
+
+                assertThat(user.getEmail()).isEqualTo(source.getEmail());
+                assertThat(user.getName()).isEqualTo(source.getName());
+                assertThat(user.getPassword()).isEqualTo(source.getPassword());
+                assertThat(user.isDeleted()).isFalse();
+            }
+        }
+
+        @DisplayName("존재하지 않는 user id가 주어진 경우")
+        @Nested
+        class Context_with_not_exist_user_id {
+        }
+    }
+
     @DisplayName("deleteUser()")
     @Nested
     class Describe_deleteUser {

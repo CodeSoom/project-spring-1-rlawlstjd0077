@@ -7,6 +7,13 @@ public class UserTestFixture {
     public static final Long NOT_EXIST_USER_ID = -10000L;
 
     public static final User EXIST_USER = generateUser();
+    public static final User UPDATE_USER = User.builder()
+            .id(EXIST_USER_ID)
+            .email("update@email.com")
+            .name("update")
+            .password("1234")
+            .build();
+
 
     public static User generateUser() {
         return User.builder()
