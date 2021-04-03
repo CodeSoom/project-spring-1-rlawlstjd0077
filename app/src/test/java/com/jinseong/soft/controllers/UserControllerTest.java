@@ -85,6 +85,16 @@ class UserControllerTest {
         @Nested
         class Context_with_not_exist_user_id {
             Long givenUserId = UserTestFixture.NOT_EXIST_USER_ID;
+
+            @Test
+            @DisplayName("NOT FOUND 코드를 응답한다")
+            void It_returns_not_found_status() throws Exception {
+                mockMvc.perform(
+                        delete("/users/{id}", givenUserId)
+                )
+                        .andExpect(status().isNotFound());
+
+            }
         }
     }
 }
