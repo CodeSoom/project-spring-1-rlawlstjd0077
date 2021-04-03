@@ -4,8 +4,10 @@ import com.jinseong.soft.application.UserService;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.dto.UserRegistrationData;
 import com.jinseong.soft.dto.UserResponseData;
+import com.jinseong.soft.dto.UserUpdateData;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +39,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void destroyUser(@PathVariable Long id) {
         userService.destroyUser(id);
+    }
+
+    @PatchMapping("{id}")
+    UserResponseData updateUser(
+            @PathVariable Long id,
+            @RequestBody UserUpdateData updateData) {
+        User user = userService.updateUser(id, updateData);
+        return getUserResultData(user);
     }
 
     /**

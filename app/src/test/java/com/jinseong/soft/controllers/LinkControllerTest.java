@@ -163,7 +163,7 @@ class LinkControllerTest {
     @DisplayName("PATCH /links 요청은")
     class Describe_PATCH {
         @Nested
-        @DisplayName("존재하는 링크 id가 주어진다면")
+        @DisplayName("존재하는 링크 id와 링크 수정 정보가 주어진다면")
         class Context_with_exist_link_id {
             long givenLinkId = LinkTestFixture.EXIST_ID;
             Link updateSource = LinkTestFixture.UPDATE_LINK;
@@ -183,7 +183,7 @@ class LinkControllerTest {
         }
 
         @Nested
-        @DisplayName("존재하지 않는 링크 id가 주어진다면")
+        @DisplayName("존재하지 않는 링크 id와 링크 수정 정보가 주어진다면")
         class Context_with_not_exist_link_id {
             long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
             Link updateSource = LinkTestFixture.UPDATE_LINK;

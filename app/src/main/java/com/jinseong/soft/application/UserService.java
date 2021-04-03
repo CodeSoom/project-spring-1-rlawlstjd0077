@@ -3,6 +3,7 @@ package com.jinseong.soft.application;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.dto.UserRegistrationData;
+import com.jinseong.soft.dto.UserUpdateData;
 import com.jinseong.soft.errors.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,15 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(Long givenUserId, User source) {
-        User user = findUser(givenUserId);
+    public User updateUser(Long id, UserUpdateData updateData) {
+        User source = User.builder()
+                .password(updateData.getPassword())
+                .name(updateData.getName())
+                .build();
+
+        User user = findUser(id);
         user.changeWith(source);
+
         return user;
     }
 
