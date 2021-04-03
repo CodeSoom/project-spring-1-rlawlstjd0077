@@ -5,6 +5,7 @@ import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.dto.UserRegistrationData;
 import com.jinseong.soft.dto.UserUpdateData;
+import com.jinseong.soft.errors.UserEmailDuplicationException;
 import com.jinseong.soft.errors.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,15 +52,29 @@ class UserServiceTest {
                     .build();
         }
 
-        @DisplayName("생성된 유저를 반환한다")
-        @Test
-        void it_returns_created_user() {
-            User user = userService.registerUser(givenUser);
+        @DisplayName("유효한 유저 정보가 주어진 경우")
+        @Nested
+        class Context_with_valid_user {
+            @DisplayName("생성된 유저를 반환한다")
+            @Test
+            void it_returns_created_user() {
+                User user = userService.registerUser(givenUser);
 
-            assertThat(user.getEmail()).isEqualTo(givenUser.getEmail());
-            assertThat(user.getName()).isEqualTo(givenUser.getName());
-            assertThat(user.getPassword()).isEqualTo(givenUser.getPassword());
-            assertThat(user.isDeleted()).isFalse();
+                assertThat(user.getEmail()).isEqualTo(givenUser.getEmail());
+                assertThat(user.getName()).isEqualTo(givenUser.getName());
+                assertThat(user.getPassword()).isEqualTo(givenUser.getPassword());
+                assertThat(user.isDeleted()).isFalse();
+            }
+        }
+
+        @DisplayName("중복된 email 정보를 가진 유저 정보가 주어진 경우")
+        @Nested
+        class Context_with_duplication_email_user {
+            @DisplayName("이메일이 중복되었다는 예외를 던진다")
+            @Test
+            void it_throws_duplication_email_exception() {
+                assertThrows(UserEmailDuplicationException.class, () -> userService.registerUser(givenUser));
+            }
         }
     }
 
