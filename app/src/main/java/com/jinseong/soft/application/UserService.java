@@ -5,6 +5,8 @@ import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.errors.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class UserService {
 
@@ -14,13 +16,22 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User createUser(User user) {
         return userRepository.save(user);
     }
 
+    @Transactional
     public User deleteUser(Long id) {
         User user = findUser(id);
         user.destroy();
+        return user;
+    }
+
+    @Transactional
+    public User updateUser(Long givenUserId, User source) {
+        User user = findUser(givenUserId);
+        user.changeWith(source);
         return user;
     }
 
@@ -33,9 +44,5 @@ public class UserService {
     private User findUser(Long id) {
         return userRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-    }
-
-    public User updateUser(Long givenUserId, User source) {
-        return source;
     }
 }

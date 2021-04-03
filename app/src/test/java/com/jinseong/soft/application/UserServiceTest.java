@@ -19,22 +19,19 @@ import static org.mockito.BDDMockito.given;
 
 class UserServiceTest {
     UserService userService;
+    UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        userRepository = Mockito.mock(UserRepository.class);
         userService = new UserService(userRepository);
 
         User user = UserTestFixture.generateUser();
-        User deletedUser = UserTestFixture.generateUser();
-        deletedUser.destroy();
 
         given(userRepository.save(any(User.class))).willReturn(user);
 
-        given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.EXIST_USER_ID)))
-                .willReturn(Optional.of(deletedUser));
-        given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.NOT_EXIST_USER_ID)))
-                .willReturn(Optional.empty());
+        given(userRepository.findByIdAndDeletedIsFalse(UserTestFixture.EXIST_USER_ID))
+                .willReturn(Optional.of(user));
     }
 
     @DisplayName("createUser()")
@@ -68,7 +65,6 @@ class UserServiceTest {
                 User source = UserTestFixture.UPDATE_USER;
                 User user = userService.updateUser(givenUserId, source);
 
-                assertThat(user.getEmail()).isEqualTo(source.getEmail());
                 assertThat(user.getName()).isEqualTo(source.getName());
                 assertThat(user.getPassword()).isEqualTo(source.getPassword());
                 assertThat(user.isDeleted()).isFalse();
@@ -84,6 +80,17 @@ class UserServiceTest {
     @DisplayName("deleteUser()")
     @Nested
     class Describe_deleteUser {
+        @BeforeEach
+        void setUp() {
+            User deletedUser = UserTestFixture.generateUser();
+            deletedUser.destroy();
+
+            given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.EXIST_USER_ID)))
+                    .willReturn(Optional.of(deletedUser));
+            given(userRepository.findByIdAndDeletedIsFalse(eq(UserTestFixture.NOT_EXIST_USER_ID)))
+                    .willReturn(Optional.empty());
+        }
+
         @DisplayName("존재하는 user id가 주어진 경우")
         @Nested
         class Context_with_exist_user_id {
