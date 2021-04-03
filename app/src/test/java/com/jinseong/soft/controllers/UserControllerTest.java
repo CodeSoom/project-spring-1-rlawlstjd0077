@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -44,6 +45,7 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
+        Mockito.reset(userService);
         given(userService.registerUser(any(UserRegistrationData.class)))
                 .willReturn(UserTestFixture.EXIST_USER);
         given(userService.destroyUser(UserTestFixture.NOT_EXIST_USER_ID))
@@ -54,6 +56,8 @@ class UserControllerTest {
                         .name(((UserUpdateData) invocation.getArgument(1)).getName())
                         .email(UserTestFixture.EXIST_USER.getEmail())
                         .build());
+        given(userService.updateUser(eq(UserTestFixture.NOT_EXIST_USER_ID), any(UserUpdateData.class)))
+                .willThrow(UserNotFoundException.class);
     }
 
 
