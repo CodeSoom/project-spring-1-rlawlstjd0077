@@ -213,7 +213,7 @@ class LinkControllerTest {
 
             @Test
             @DisplayName("NO CONTENT 코드를 응답한다")
-            void It_returns_ok_status_with_updated_link() throws Exception {
+            void It_returns_no_content() throws Exception {
                 mockMvc.perform(
                         delete("/links/{id}", givenLinkId)
                 )
