@@ -2,6 +2,7 @@ package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
+import com.jinseong.soft.dto.UserRegistrationData;
 import com.jinseong.soft.errors.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,13 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public User registerUser(UserRegistrationData registrationData) {
+        User source = User.builder()
+                .email(registrationData.getEmail())
+                .password(registrationData.getPassword())
+                .name(registrationData.getName())
+                .build();
+        return userRepository.save(source);
     }
 
     @Transactional

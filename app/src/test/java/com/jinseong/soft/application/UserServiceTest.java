@@ -3,6 +3,7 @@ package com.jinseong.soft.application;
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
+import com.jinseong.soft.dto.UserRegistrationData;
 import com.jinseong.soft.errors.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,12 +38,22 @@ class UserServiceTest {
     @DisplayName("createUser()")
     @Nested
     class Describe_createUser {
-        User givenUser = UserTestFixture.generateUser();
+        UserRegistrationData givenUser;
+
+        @BeforeEach
+        void setUp() {
+            User user = UserTestFixture.generateUser();
+            givenUser = UserRegistrationData.builder()
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .name(user.getName())
+                    .build();
+        }
 
         @DisplayName("생성된 유저를 반환한다")
         @Test
         void it_returns_created_user() {
-            User user = userService.createUser(givenUser);
+            User user = userService.registerUser(givenUser);
 
             assertThat(user.getEmail()).isEqualTo(givenUser.getEmail());
             assertThat(user.getName()).isEqualTo(givenUser.getName());

@@ -3,7 +3,8 @@ package com.jinseong.soft.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.application.UserService;
-import com.jinseong.soft.domain.User;
+import com.jinseong.soft.dto.UserRegistrationData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,13 +15,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
-    private static final User USER = UserTestFixture.EXIST_USER;
+    private static final UserRegistrationData USER = UserRegistrationData.builder()
+            .email(UserTestFixture.EXIST_USER.getEmail())
+            .password(UserTestFixture.EXIST_USER.getPassword())
+            .name(UserTestFixture.EXIST_USER.getName())
+            .build();
 
     @MockBean
     UserService userService;
@@ -30,6 +37,11 @@ class UserControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        given(userService.registerUser(any(UserRegistrationData.class))).willReturn(UserTestFixture.EXIST_USER);
+    }
 
 
     @DisplayName("POST /users 요청은")
