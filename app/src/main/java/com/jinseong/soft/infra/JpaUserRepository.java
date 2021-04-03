@@ -10,4 +10,6 @@ public interface JpaUserRepository
     User save(User user);
 
     Optional<User> findByIdAndDeletedIsFalse(Long id);
+    
+    boolean existsByEmail(String email);
 }

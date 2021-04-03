@@ -70,6 +70,12 @@ class UserServiceTest {
         @DisplayName("중복된 email 정보를 가진 유저 정보가 주어진 경우")
         @Nested
         class Context_with_duplication_email_user {
+            @BeforeEach
+            void setUp() {
+                given(userRepository.existsByEmail(eq(givenUser.getEmail())))
+                        .willReturn(true);
+            }
+
             @DisplayName("이메일이 중복되었다는 예외를 던진다")
             @Test
             void it_throws_duplication_email_exception() {

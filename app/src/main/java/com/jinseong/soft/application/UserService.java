@@ -4,6 +4,7 @@ import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.dto.UserRegistrationData;
 import com.jinseong.soft.dto.UserUpdateData;
+import com.jinseong.soft.errors.UserEmailDuplicationException;
 import com.jinseong.soft.errors.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,12 @@ public class UserService {
 
     @Transactional
     public User registerUser(UserRegistrationData registrationData) {
+        String email = registrationData.getEmail();
+
+        if (userRepository.existsByEmail(email)) {
+            throw new UserEmailDuplicationException(email);
+        }
+
         User source = User.builder()
                 .email(registrationData.getEmail())
                 .password(registrationData.getPassword())
