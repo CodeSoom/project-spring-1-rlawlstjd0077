@@ -78,14 +78,16 @@ class UserControllerTest {
     @DisplayName("PATCH /users/{id} 요청은")
     @Nested
     class Describe_PATCH_users {
+        UserUpdateData updateSource = UserUpdateData.builder()
+                .name(UserTestFixture.UPDATE_USER.getName())
+                .password(UserTestFixture.UPDATE_USER.getPassword())
+                .build();
+
         @DisplayName("존재하는 user id와 유저 수정 정보가 주어진 경우")
         @Nested
         class Context_with_exist_user_id {
             Long givenUserId = UserTestFixture.EXIST_USER_ID;
-            UserUpdateData updateSource = UserUpdateData.builder()
-                    .name(UserTestFixture.UPDATE_USER.getName())
-                    .password(UserTestFixture.UPDATE_USER.getPassword())
-                    .build();
+
 
             @Test
             @DisplayName("OK 코드와 수정된 유저를 응답한다")
@@ -110,7 +112,13 @@ class UserControllerTest {
             @Test
             @DisplayName("NOT FOUND 코드를 응답한다")
             void It_returns_not_found_status() throws Exception {
-
+                mockMvc.perform(
+                        patch("/users/{id}", givenUserId)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(updateSource))
+                )
+                        .andExpect(status().isNotFound());
             }
         }
 
