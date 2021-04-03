@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +60,31 @@ class UserControllerTest {
                     .andExpect(status().isCreated())
                     .andExpect(content().string(containsString(USER.getName())))
                     .andExpect(content().string(containsString(USER.getEmail())));
+        }
+    }
+
+    @DisplayName("DELETE /users/{id} 요청은")
+    @Nested
+    class Describe_DELETE_users {
+        @DisplayName("존재하는 user id가 주어진 경우")
+        @Nested
+        class Context_with_exist_user_id {
+            Long givenUserId = UserTestFixture.EXIST_USER_ID;
+
+            @Test
+            @DisplayName("NO CONTENT 코드를 응답한다")
+            void It_returns_ok_status_with_updated_link() throws Exception {
+                mockMvc.perform(
+                        delete("/users/{id}", givenUserId)
+                )
+                        .andExpect(status().isNoContent());
+            }
+        }
+
+        @DisplayName("존재하지 않는 user id가 주어진 경우")
+        @Nested
+        class Context_with_not_exist_user_id {
+            Long givenUserId = UserTestFixture.NOT_EXIST_USER_ID;
         }
     }
 }
