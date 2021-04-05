@@ -3,6 +3,9 @@ package com.jinseong.soft.application;
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
+import com.jinseong.soft.dto.UserRegistrationData;
+import com.jinseong.soft.dto.UserUpdateData;
+import com.jinseong.soft.errors.UserEmailDuplicationException;
 import com.jinseong.soft.errors.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,24 +40,59 @@ class UserServiceTest {
     @DisplayName("createUser()")
     @Nested
     class Describe_createUser {
-        User givenUser = UserTestFixture.generateUser();
+        UserRegistrationData givenUser;
 
-        @DisplayName("생성된 유저를 반환한다")
-        @Test
-        void it_returns_created_user() {
-            User user = userService.createUser(givenUser);
+        @BeforeEach
+        void setUp() {
+            User user = UserTestFixture.generateUser();
+            givenUser = UserRegistrationData.builder()
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .name(user.getName())
+                    .build();
+        }
 
-            assertThat(user.getEmail()).isEqualTo(givenUser.getEmail());
-            assertThat(user.getName()).isEqualTo(givenUser.getName());
-            assertThat(user.getPassword()).isEqualTo(givenUser.getPassword());
-            assertThat(user.isDeleted()).isFalse();
+        @DisplayName("유효한 유저 정보가 주어진 경우")
+        @Nested
+        class Context_with_valid_user {
+            @DisplayName("생성된 유저를 반환한다")
+            @Test
+            void it_returns_created_user() {
+                User user = userService.registerUser(givenUser);
+
+                assertThat(user.getEmail()).isEqualTo(givenUser.getEmail());
+                assertThat(user.getName()).isEqualTo(givenUser.getName());
+                assertThat(user.getPassword()).isEqualTo(givenUser.getPassword());
+                assertThat(user.isDeleted()).isFalse();
+            }
+        }
+
+        @DisplayName("중복된 email 정보를 가진 유저 정보가 주어진 경우")
+        @Nested
+        class Context_with_duplication_email_user {
+            @BeforeEach
+            void setUp() {
+                given(userRepository.existsByEmail(eq(givenUser.getEmail())))
+                        .willReturn(true);
+            }
+
+            @DisplayName("이메일이 중복되었다는 예외를 던진다")
+            @Test
+            void it_throws_duplication_email_exception() {
+                assertThrows(UserEmailDuplicationException.class, () -> userService.registerUser(givenUser));
+            }
         }
     }
 
     @DisplayName("updateUser()")
     @Nested
     class Describe_updateUser {
-        @DisplayName("존재하는 user id가 주어진 경우")
+        UserUpdateData source = UserUpdateData.builder()
+                .password(UserTestFixture.UPDATE_USER.getPassword())
+                .name(UserTestFixture.UPDATE_USER.getName())
+                .build();
+
+        @DisplayName("존재하는 user id와 유저 수정 정보가 주어진 경우")
         @Nested
         class Context_with_exist_user_id {
             Long givenUserId = UserTestFixture.EXIST_USER_ID;
@@ -62,7 +100,6 @@ class UserServiceTest {
             @DisplayName("수정된 유저를 반환한다")
             @Test
             void it_returns_deleted_user() {
-                User source = UserTestFixture.UPDATE_USER;
                 User user = userService.updateUser(givenUserId, source);
 
                 assertThat(user.getName()).isEqualTo(source.getName());
@@ -79,7 +116,6 @@ class UserServiceTest {
             @DisplayName("유저를 찾을 수 없다는 예외를 반환한다")
             @Test
             void it_returns_user_found_exception() {
-                User source = UserTestFixture.UPDATE_USER;
                 assertThrows(UserNotFoundException.class, () -> userService.updateUser(givenUserId, source));
             }
         }
@@ -108,7 +144,7 @@ class UserServiceTest {
             @DisplayName("삭제된 유저를 반환한다")
             @Test
             void it_returns_deleted_user() {
-                User user = userService.deleteUser(givenUserId);
+                User user = userService.destroyUser(givenUserId);
 
                 assertThat(user.getEmail()).isEqualTo(UserTestFixture.EXIST_USER.getEmail());
                 assertThat(user.getName()).isEqualTo(UserTestFixture.EXIST_USER.getName());
@@ -125,7 +161,7 @@ class UserServiceTest {
             @DisplayName("유저를 찾을 수 없다는 예외를 반환한다")
             @Test
             void it_returns_user_found_exception() {
-                assertThrows(UserNotFoundException.class, () -> userService.deleteUser(givenUserId));
+                assertThrows(UserNotFoundException.class, () -> userService.destroyUser(givenUserId));
             }
         }
     }

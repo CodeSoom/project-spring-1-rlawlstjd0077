@@ -21,4 +21,12 @@ public interface UserRepository {
      * @return 유저
      */
     Optional<User> findByIdAndDeletedIsFalse(Long id);
+
+    /**
+     * 전달받은 email과 일치하는 유저가 존재한다면 true를, 그렇지 않다면 false를 리턴합니다.
+     *
+     * @param email 유저 email
+     * @return 유저 존재 여부
+     */
+    boolean existsByEmail(String email);
 }
