@@ -71,6 +71,9 @@ dependencies {
     implementation 'org.springframework.security:spring-security-test'
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    //Web jars
+    compile 'org.webjars:jquery:3.4.1'
 }
 
 application {
