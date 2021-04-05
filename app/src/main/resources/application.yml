@@ -3,3 +3,10 @@ server:
     encoding:
       charset: UTF-8
       force: true
+
+spring:
+  datasource:
+    url: jdbc:h2:~/data/linker
+  jpa:
+    hibernate:
+      ddl-auto: update
