@@ -9,35 +9,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
-    private User user;
-
     PasswordEncoder passwordEncoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    @BeforeEach
-    void setUp() {
-        user = UserTestFixture.generateUser();
-    }
-
     @Test
-    void createUserWithBuilder() {
-        assertThat(user.getEmail()).isEqualTo("test@email.com");
+    void changeWith() {
+        User user = new User();
+        User source = User.builder()
+                .name("test")
+                .password("1234")
+                .build();
+
+        user.changeWith(source);
+
         assertThat(user.getName()).isEqualTo("test");
-        assertThat(user.getPassword()).isEqualTo("1234");
+        assertThat(user.getPassword()).isEqualTo("");
         assertThat(user.isDeleted()).isFalse();
     }
 
     @Test
     void destroyUser() {
+        User user = new User();
         user.destroy();
         assertThat(user.isDeleted()).isTrue();
     }
 
     @Test
     void changeUserPassword() {
-        String password = "12345";
+        String password = "1234";
+        User user = new User();
+        User source = User.builder()
+                .name("test")
+                .password("1234")
+                .build();
 
-        user.changePassword(password);
+        user.changeWith(source);
+        user.changePassword(password, passwordEncoder);
+
+        assertThat(user.getName()).isEqualTo("test");
         assertThat(user.authenticated(password, passwordEncoder)).isTrue();
     }
 }

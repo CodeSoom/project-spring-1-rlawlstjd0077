@@ -43,15 +43,17 @@ public class User {
         deleted = true;
     }
 
-    public void changeWith(User source) {
+    public void changeWith(UserNameGettable source) {
         this.name = source.getName();
     }
 
-    public void changePassword(String password) {
-        this.password = password;
+    public void changePassword(String password,
+                               PasswordEncoder encoder) {
+        this.password = encoder.encode(password);
     }
 
-    public boolean authenticated(String password, PasswordEncoder encoder) {
+    public boolean authenticated(String password,
+                                 PasswordEncoder encoder) {
         return encoder.matches(password, this.password);
     }
 }
