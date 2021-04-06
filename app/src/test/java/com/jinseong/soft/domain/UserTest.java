@@ -3,11 +3,16 @@ package com.jinseong.soft.domain;
 import com.jinseong.soft.UserTestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
     private User user;
+
+    PasswordEncoder passwordEncoder =
+            PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @BeforeEach
     void setUp() {
@@ -33,5 +38,6 @@ class UserTest {
         String password = "12345";
 
         user.changePassword(password);
+        assertThat(user.authenticated(password, passwordEncoder)).isTrue();
     }
 }

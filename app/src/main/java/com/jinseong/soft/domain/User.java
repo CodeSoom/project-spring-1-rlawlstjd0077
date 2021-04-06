@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,5 +49,9 @@ public class User {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public boolean authenticated(String password, PasswordEncoder encoder) {
+        return encoder.matches(password, this.password);
     }
 }
