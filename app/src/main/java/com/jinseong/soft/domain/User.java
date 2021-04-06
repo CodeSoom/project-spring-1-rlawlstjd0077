@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,8 +43,17 @@ public class User {
         deleted = true;
     }
 
-    public void changeWith(User source) {
+    public void changeWith(UserNameGettable source) {
         this.name = source.getName();
-        this.password = source.getPassword();
+    }
+
+    public void changePassword(String password,
+                               PasswordEncoder encoder) {
+        this.password = encoder.encode(password);
+    }
+
+    public boolean authenticated(String password,
+                                 PasswordEncoder encoder) {
+        return encoder.matches(password, this.password);
     }
 }

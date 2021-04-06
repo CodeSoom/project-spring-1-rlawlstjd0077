@@ -29,4 +29,11 @@ public interface UserRepository {
      * @return 유저 존재 여부
      */
     boolean existsByEmail(String email);
+
+    /**
+     * 전달받은 email과 일치하는 유저를 반환합니다.
+     * @param email 유저 email
+     * @return email과 일치하는 유저
+     */
+    Optional<User> findByEmail(String email);
 }

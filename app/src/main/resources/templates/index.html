@@ -4,14 +4,14 @@
 <head>
     <title>링크 목록</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-6">
             <a href="/create-link" role="button" class="btn btn-primary">링크 등록</a>
-            <a href="/" class="btn btn-success active" role="button">Login</a>
+            <a href="/login" class="btn btn-success active" role="button">Login</a>
         </div>
     </div>
     <br>
@@ -45,8 +45,8 @@
         </table>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="http://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/app/index.js"></script>
 </body>
 </html>

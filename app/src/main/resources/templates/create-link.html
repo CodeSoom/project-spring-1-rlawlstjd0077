@@ -3,7 +3,7 @@
 <head>
     <title>Linker!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <h1 style="text-align:center; margin-top: 1em;">링크 등록하기</h1>
@@ -57,10 +57,11 @@
         </form>
         <div class="form-group">
             <button type="button" class="btn btn-primary" id="btn-save">등록</button>
+            <button type="button" class="btn btn-danger" id="btn-cancel">취소</button>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/app/create-link.js"></script>
 </body>
