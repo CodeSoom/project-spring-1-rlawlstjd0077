@@ -44,6 +44,9 @@ public class User {
 
     public void changeWith(User source) {
         this.name = source.getName();
-        this.password = source.getPassword();
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 }

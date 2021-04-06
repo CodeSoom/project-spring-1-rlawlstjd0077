@@ -27,4 +27,11 @@ class UserTest {
         user.destroy();
         assertThat(user.isDeleted()).isTrue();
     }
+
+    @Test
+    void changeUserPassword() {
+        String password = "12345";
+
+        user.changePassword(password);
+    }
 }
