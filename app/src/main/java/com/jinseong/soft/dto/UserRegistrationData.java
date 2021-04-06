@@ -1,5 +1,6 @@
 package com.jinseong.soft.dto;
 
+import com.jinseong.soft.domain.UserNameGettable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegistrationData {
+public class UserRegistrationData implements UserNameGettable {
     private String email;
 
     private String name;
