@@ -4,6 +4,9 @@ var main = {
         $('#btn-save').on('click', function () {
             _this.save();
         });
+        $('#btn-cancel').on('click', function () {
+            window.location.href = '/';
+        });
     },
     save : function () {
         var data = {
