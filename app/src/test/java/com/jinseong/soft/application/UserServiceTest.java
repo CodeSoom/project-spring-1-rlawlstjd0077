@@ -7,12 +7,15 @@ import com.jinseong.soft.dto.UserRegistrationData;
 import com.jinseong.soft.dto.UserUpdateData;
 import com.jinseong.soft.errors.UserEmailDuplicationException;
 import com.jinseong.soft.errors.UserNotFoundException;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,11 +26,12 @@ import static org.mockito.BDDMockito.given;
 class UserServiceTest {
     UserService userService;
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, passwordEncoder);
 
         User user = UserTestFixture.generateUser();
 
