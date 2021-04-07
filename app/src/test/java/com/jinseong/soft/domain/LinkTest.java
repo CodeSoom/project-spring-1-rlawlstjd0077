@@ -1,12 +1,18 @@
 package com.jinseong.soft.domain;
 
 import com.jinseong.soft.LinkTestFixture;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LinkTest {
-    private final Link link = LinkTestFixture.LINK;
+    Link link;
+
+    @BeforeEach
+    void setUp() {
+        link = LinkTestFixture.LINK;
+    }
 
     @Test
     void createLinkWithBuilder() {
