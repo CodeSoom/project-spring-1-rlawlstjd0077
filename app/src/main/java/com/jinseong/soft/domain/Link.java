@@ -47,8 +47,7 @@ public class Link {
     /**
      * 링크의 type (Youtube, Blog, Book, Resource, Document)
      */
-    //TODO: Enum 으로 변경 필요
-    private String type;
+    private Type type;
 
     /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
