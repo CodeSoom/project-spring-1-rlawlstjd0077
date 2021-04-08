@@ -47,6 +47,7 @@ public class Link {
     /**
      * 링크의 type (Youtube, Blog, Book, Resource, Document)
      */
+    @OneToOne
     private Type type;
 
     /**
