@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * 링크 정보
@@ -40,6 +41,7 @@ public class Link {
     /**
      * 링크 카테고리 (Java, DB, Spring)
      */
+    @OneToOne
     private Category category;
 
     /**
