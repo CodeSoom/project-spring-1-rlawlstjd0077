@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 링크 정보
@@ -51,6 +51,12 @@ public class Link {
     private Type type;
 
     /**
+     * 링크의 tag (Spring, Java, MySQL)
+     */
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();
+
+    /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
      *
      * @param source 링크 수정 정보
@@ -61,5 +67,13 @@ public class Link {
         this.description = source.getDescription();
         this.type = source.getType();
         this.category = source.getCategory();
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public void addTag(List<Tag> tag) {
+        this.tags.addAll(tag);
     }
 }
