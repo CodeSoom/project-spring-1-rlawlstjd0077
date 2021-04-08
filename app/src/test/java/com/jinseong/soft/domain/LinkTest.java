@@ -20,7 +20,7 @@ class LinkTest {
         assertThat(link.getLinkURL())
                 .isEqualTo("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/");
         assertThat(link.getCategory()).isEqualTo(LinkTestFixture.CATEGORY);
-        assertThat(link.getType()).isEqualTo("Document");
+        assertThat(link.getType()).isEqualTo(LinkTestFixture.TYPE);
         assertThat(link.getDescription()).isEqualTo("스프링 부트에 관한 공식 문서이다.");
     }
 
@@ -30,7 +30,7 @@ class LinkTest {
                 .title("SpringBoot Document")
                 .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
                 .category(LinkTestFixture.UPDATE_CATEGORY)
-                .type("Document")
+                .type(LinkTestFixture.UPDATE_TYPE)
                 .description("This is the official documentation for Spring Boot.")
                 .build()
         );
@@ -39,7 +39,7 @@ class LinkTest {
         assertThat(link.getLinkURL())
                 .isEqualTo("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/");
         assertThat(link.getCategory()).isEqualTo(LinkTestFixture.UPDATE_CATEGORY);
-        assertThat(link.getType()).isEqualTo("Document");
+        assertThat(link.getType()).isEqualTo(LinkTestFixture.UPDATE_TYPE);
         assertThat(link.getDescription()).isEqualTo("This is the official documentation for Spring Boot.");
     }
 }

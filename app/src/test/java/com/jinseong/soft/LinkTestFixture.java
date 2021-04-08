@@ -2,6 +2,7 @@ package com.jinseong.soft;
 
 import com.jinseong.soft.domain.Category;
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.domain.Type;
 
 public class LinkTestFixture {
     public static final Category CATEGORY = Category.builder()
@@ -9,6 +10,13 @@ public class LinkTestFixture {
             .build();
     public static final Category UPDATE_CATEGORY = Category.builder()
             .title("SpringBoot")
+            .build();
+
+    public static final Type TYPE = Type.builder()
+            .title("Youtube")
+            .build();
+    public static final Type UPDATE_TYPE = Type.builder()
+            .title("Document")
             .build();
 
     public static final long EXIST_ID = 0L;
@@ -19,7 +27,7 @@ public class LinkTestFixture {
             .title("스프링 부트 문서")
             .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
             .category(CATEGORY)
-            .type("Document")
+            .type(TYPE)
             .description("스프링 부트에 관한 공식 문서이다.")
             .build();
 
@@ -27,7 +35,7 @@ public class LinkTestFixture {
             .title("SpringBoot Document")
             .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
             .category(UPDATE_CATEGORY)
-            .type("Document")
+            .type(UPDATE_TYPE)
             .description("This is the official documentation for Spring Boot.")
             .build();
 
