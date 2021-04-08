@@ -1,19 +1,17 @@
 package com.jinseong.soft.infra;
 
-import com.jinseong.soft.domain.Link;
-import com.jinseong.soft.domain.LinkRepository;
+import com.jinseong.soft.domain.Tag;
+import com.jinseong.soft.domain.TagRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface JpaTagRepository
-        extends LinkRepository, CrudRepository<Link, Long> {
-    List<Link> findAll();
+        extends TagRepository, CrudRepository<Tag, Long> {
+    List<Tag> findAll();
 
-    Optional<Link> findById(Long id);
+    Optional<Tag> findByTitle(String title);
 
-    Link save(Link Link);
-
-    void delete(Link Link);
+    Tag save(Tag tag);
 }
