@@ -40,8 +40,7 @@ public class Link {
     /**
      * 링크 카테고리 (Java, DB, Spring)
      */
-    //TODO: 추후 목록으로 변경 필요
-    private String category;
+    private Category category;
 
     /**
      * 링크의 type (Youtube, Blog, Book, Resource, Document)
