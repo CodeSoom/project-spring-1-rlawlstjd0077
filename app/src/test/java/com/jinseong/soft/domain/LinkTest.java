@@ -11,7 +11,7 @@ class LinkTest {
 
     @BeforeEach
     void setUp() {
-        link = LinkTestFixture.LINK;
+        link = LinkTestFixture.generateLink();
     }
 
     @Test

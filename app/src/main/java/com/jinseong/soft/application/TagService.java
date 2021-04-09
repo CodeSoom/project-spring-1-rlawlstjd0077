@@ -2,10 +2,10 @@ package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Tag;
 import com.jinseong.soft.domain.TagRepository;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -17,8 +17,8 @@ public class TagService {
     }
 
     public Tag getOrCreateTag(String title) {
-        Optional<Tag> byTitle = tagRepository.findByTitle(title);
-        return byTitle.orElseGet(() -> createNewTag(title));
+        Optional<Tag> findByTitle = tagRepository.findByTitle(title);
+        return findByTitle.orElseGet(() -> createNewTag(title));
     }
 
     private Tag createNewTag(String title) {

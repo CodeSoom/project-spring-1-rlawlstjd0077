@@ -2,17 +2,17 @@ package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Tag;
 import com.jinseong.soft.domain.TagRepository;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 class TagServiceTest {
     TagService tagService;
-
 
     @BeforeEach
     void setUp() {
