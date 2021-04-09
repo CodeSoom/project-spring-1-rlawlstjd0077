@@ -2,6 +2,7 @@ package com.jinseong.soft.controllers;
 
 import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.dto.LinkRequestData;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,7 +57,7 @@ public class LinkController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Link createLink(@RequestBody Link link) {
+    public Link createLink(@RequestBody LinkRequestData link) {
         return linkService.createLink(link);
     }
 
@@ -68,7 +69,7 @@ public class LinkController {
      * @return 수정된 링크
      */
     @PatchMapping("{id}")
-    public Link updateLink(@PathVariable Long id, @RequestBody Link source) {
+    public Link updateLink(@PathVariable Long id, @RequestBody LinkRequestData source) {
         return linkService.updateLink(id, source);
     }
 
