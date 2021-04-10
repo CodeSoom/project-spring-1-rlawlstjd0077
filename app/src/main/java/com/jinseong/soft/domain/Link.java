@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class Link {
+public class Link extends DateAudit {
     @Id
     @GeneratedValue
     private Long id;
