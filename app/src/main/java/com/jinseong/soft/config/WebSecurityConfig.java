@@ -2,6 +2,7 @@ package com.jinseong.soft.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,8 +23,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile", "favicon.ico", "/resources/**").permitAll()
-                .antMatchers("/css/**", "/js/**", "/img/**", "**/favicon.ico", "/signup", "/webjars/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/links/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers("/", "/signup", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -34,8 +37,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/users");
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/build/static/**")
+                .antMatchers("/static/**")
+                .antMatchers("/favicon.ico")
+                .antMatchers("/manifest.json")
+                .antMatchers("/css/**")
+                .antMatchers("/js/**")
+                .antMatchers("/img/**")
+                .antMatchers("/docs/index/html")
+                .antMatchers("/webjars/**");
     }
 
     @Bean
