@@ -42,6 +42,16 @@
                 <input type="text" class="form-control" id="type" placeholder="링크 Type .. " th:value="${link.type}"
                        aria-describedby="typeHelp">
             </div>
+
+            <div class="form-group">
+                <label for="tag">링크 Tag</label>
+                <input type="text" class="form-control" id="tag" placeholder="링크 Tag .. "
+                       aria-describedby="tagHelp">
+                <small id="tagHelp" class="form-text text-muted">
+                    해당 링크의 Tag를 입력해주세요!
+                </small>
+            </div>
+
         </form>
         <div class="form-group">
             <button type="button" class="btn btn-primary" id="btn-update">업데이트</button>
