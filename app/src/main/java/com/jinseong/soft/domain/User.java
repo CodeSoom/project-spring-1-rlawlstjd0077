@@ -18,7 +18,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends DateAudit {
 
     @Id
     @GeneratedValue
