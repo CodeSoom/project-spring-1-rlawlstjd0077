@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 링크 HTTP 요청 핸들러
@@ -26,8 +27,11 @@ public class LinkController {
      * @return 링크 목록
      */
     @GetMapping
-    public List<Link> getLinks() {
-        return linkService.getLinks();
+    public List<LinkData> getLinks() {
+        List<Link> links = linkService.getLinks();
+        return links.stream()
+                .map(LinkData::convertLinkToLinkData)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -37,21 +41,23 @@ public class LinkController {
      * @return 링크
      */
     @GetMapping("{id}")
-    public Link getLink(@PathVariable Long id) {
-        return linkService.getLink(id);
+    public LinkData getLink(@PathVariable Long id) {
+        Link link = linkService.getLink(id);
+        return LinkData.convertLinkToLinkData(link);
     }
 
 
     /**
      * 주어진 링크 정보로 새로운 링크를 생성한 뒤 응답합니다.
      *
-     * @param link 링크 정보
+     * @param source 링크 정보
      * @return 생성된 링크
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Link createLink(@RequestBody LinkData link) {
-        return linkService.createLink(link);
+    public LinkData createLink(@RequestBody LinkData source) {
+        Link link = linkService.createLink(source);
+        return LinkData.convertLinkToLinkData(link);
     }
 
     /**
@@ -62,8 +68,9 @@ public class LinkController {
      * @return 수정된 링크
      */
     @PatchMapping("{id}")
-    public Link updateLink(@PathVariable Long id, @RequestBody LinkData source) {
-        return linkService.updateLink(id, source);
+    public LinkData updateLink(@PathVariable Long id, @RequestBody LinkData source) {
+        Link link = linkService.updateLink(id, source);
+        return LinkData.convertLinkToLinkData(link);
     }
 
     @DeleteMapping("{id}")
