@@ -1,10 +1,14 @@
 package com.jinseong.soft.controllers;
 
 import com.jinseong.soft.application.LinkService;
+import com.jinseong.soft.dto.LinkData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class IndexController {
@@ -16,7 +20,12 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("links", linkService.getLinks());
+        List<LinkData> links = linkService.getLinks()
+                .stream()
+                .map(LinkData::convertLinkToLinkData)
+                .collect(Collectors.toList());
+
+        model.addAttribute("links", links);
         return "index";
     }
 

@@ -10,7 +10,6 @@ import com.jinseong.soft.errors.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -64,7 +63,7 @@ class UserControllerTest {
     @DisplayName("POST /users 요청은")
     @Nested
     class Describe_POST_users {
-        @Test
+        @ControllerTest
         @DisplayName("CREATED 상태 코드와 생성된 유저를 응답한다")
         void It_returns_created_status_with_created_user() throws Exception {
             mockMvc.perform(
@@ -93,7 +92,7 @@ class UserControllerTest {
             Long givenUserId = UserTestFixture.EXIST_USER_ID;
 
 
-            @Test
+            @ControllerTest
             @DisplayName("OK 코드와 수정된 유저를 응답한다")
             void It_returns_ok_status_with_updated_link() throws Exception {
                 mockMvc.perform(
@@ -113,7 +112,7 @@ class UserControllerTest {
         class Context_with_not_exist_user_id {
             Long givenUserId = UserTestFixture.NOT_EXIST_USER_ID;
 
-            @Test
+            @ControllerTest
             @DisplayName("NOT FOUND 코드를 응답한다")
             void It_returns_not_found_status() throws Exception {
                 mockMvc.perform(
@@ -134,7 +133,7 @@ class UserControllerTest {
             class Context_with_exist_user_id {
                 Long givenUserId = UserTestFixture.EXIST_USER_ID;
 
-                @Test
+                @ControllerTest
                 @DisplayName("NO CONTENT 코드를 응답한다")
                 void It_returns_ok_status_with_updated_link() throws Exception {
                     mockMvc.perform(
@@ -149,7 +148,7 @@ class UserControllerTest {
             class Context_with_not_exist_user_id {
                 Long givenUserId = UserTestFixture.NOT_EXIST_USER_ID;
 
-                @Test
+                @ControllerTest
                 @DisplayName("NOT FOUND 코드를 응답한다")
                 void It_returns_not_found_status() throws Exception {
                     mockMvc.perform(

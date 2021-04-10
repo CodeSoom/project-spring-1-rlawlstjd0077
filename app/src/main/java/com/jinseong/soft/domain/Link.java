@@ -1,13 +1,19 @@
 package com.jinseong.soft.domain;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * 링크 정보
@@ -17,7 +23,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class Link {
+public class Link extends DateAudit {
     @Id
     @GeneratedValue
     private Long id;
@@ -40,14 +46,29 @@ public class Link {
     /**
      * 링크 카테고리 (Java, DB, Spring)
      */
-    //TODO: 추후 목록으로 변경 필요
-    private String category;
+    @OneToOne
+    private Category category;
 
     /**
      * 링크의 type (Youtube, Blog, Book, Resource, Document)
      */
-    //TODO: Enum 으로 변경 필요
-    private String type;
+    @OneToOne
+    private Type type;
+
+    /**
+     * 링크의 tag (Spring, Java, MySQL)
+     */
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();
+
+    /**
+     * 링크 생성 유저
+     */
+    @OneToOne
+    private User user;
+
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
+    Set<Like> likes = new HashSet<>();
 
     /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
@@ -60,5 +81,13 @@ public class Link {
         this.description = source.getDescription();
         this.type = source.getType();
         this.category = source.getCategory();
+    }
+
+    public void addLike(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public int getLikeCount() {
+        return likes.size();
     }
 }

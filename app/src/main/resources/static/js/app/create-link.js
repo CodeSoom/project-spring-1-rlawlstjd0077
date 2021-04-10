@@ -15,6 +15,9 @@ var main = {
             description: $('#description').val(),
             category: $('#category').val(),
             type: $('#type').val(),
+            tags: $('#tag').map(function() {
+                   return $(this).val();
+                 }).get()
         };
 
         $.ajax({

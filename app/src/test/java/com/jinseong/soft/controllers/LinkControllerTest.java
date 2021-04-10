@@ -4,18 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.dto.LinkData;
 import com.jinseong.soft.errors.LinkNotFoundException;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,8 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(LinkController.class)
 class LinkControllerTest {
-    private static final Link LINK = LinkTestFixture.LINK;
-
+    private static final LinkData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
+    private static final Link LINK = LinkTestFixture.generateLink();
+    private static final Link UPDATE_LINK = LinkTestFixture.generateUpdateLink();
     @MockBean
     LinkService linkService;
 
@@ -40,20 +43,21 @@ class LinkControllerTest {
     ObjectMapper objectMapper;
 
     @BeforeEach
+    @WithMockUser
     void setUp() {
         Mockito.reset(linkService);
-        given(linkService.createLink(any(Link.class))).willReturn(LINK);
+        given(linkService.createLink(any(LinkData.class))).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.EXIST_ID)).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.NOT_EXIST_ID))
                 .willThrow(LinkNotFoundException.class);
 
-        given(linkService.updateLink(eq(LinkTestFixture.EXIST_ID), any(Link.class)))
-                .willReturn(LinkTestFixture.UPDATE_LINK);
-        given(linkService.updateLink(eq(LinkTestFixture.NOT_EXIST_ID), any(Link.class)))
+        given(linkService.updateLink(eq(LinkTestFixture.EXIST_ID), any(LinkData.class)))
+                .willReturn(UPDATE_LINK);
+        given(linkService.updateLink(eq(LinkTestFixture.NOT_EXIST_ID), any(LinkData.class)))
                 .willThrow(LinkNotFoundException.class);
 
         given(linkService.deleteLink(eq(LinkTestFixture.EXIST_ID)))
-                .willReturn(LinkTestFixture.UPDATE_LINK);
+                .willReturn(LINK);
         given(linkService.deleteLink(eq(LinkTestFixture.NOT_EXIST_ID)))
                 .willThrow(LinkNotFoundException.class);
     }
@@ -67,13 +71,13 @@ class LinkControllerTest {
             long givenLinkId = LinkTestFixture.EXIST_ID;
 
             @DisplayName("OK 코드와 주어진 id와 일치하는 링크를 응답한다")
-            @Test
+            @ControllerTest
             void It_returns_ok_status_with_link() throws Exception {
                 mockMvc.perform(
                         get("/links/{id}", givenLinkId)
                 )
                         .andExpect(status().isOk())
-                        .andExpect(content().string(containsString(LINK.getTitle())));
+                        .andExpect(content().string(containsString(LINK_REQUEST.getTitle())));
 
                 verify(linkService).getLink(givenLinkId);
             }
@@ -85,7 +89,7 @@ class LinkControllerTest {
             long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
 
             @DisplayName("NOT FOUND 코드를 응답한다")
-            @Test
+            @ControllerTest
             void It_returns_not_found_code() throws Exception {
                 mockMvc.perform(
                         get("/links/{id}", givenLinkId)
@@ -106,7 +110,7 @@ class LinkControllerTest {
         @DisplayName("링크가 존재하지 않는 경우")
         class Context_with_no_link {
 
-            @Test
+            @ControllerTest
             @DisplayName("OK 상태코드와 빈 링크 목록을 응답한다")
             void It_returns_status_ok_and_empty_list() throws Exception {
                 mockMvc.perform(
@@ -128,14 +132,14 @@ class LinkControllerTest {
                         .willReturn(Collections.singletonList(LINK));
             }
 
-            @Test
+            @ControllerTest
             @DisplayName("OK 상태코드와 링크 목록을 응답한다")
             void It_returns_status_ok_and_empty_list() throws Exception {
                 mockMvc.perform(
                         get("/links")
                 )
                         .andExpect(status().isOk())
-                        .andExpect(content().string(containsString(LINK.getTitle())));
+                        .andExpect(content().string(containsString(LINK_REQUEST.getTitle())));
 
                 verify(linkService).getLinks();
             }
@@ -145,17 +149,17 @@ class LinkControllerTest {
     @Nested
     @DisplayName("POST /links 요청은")
     class Describe_POST {
-        @Test
+        @ControllerTest
         @DisplayName("CREATED 상태 코드와 생성된 링크를 응답한다")
         void It_returns_created_status_with_created_link() throws Exception {
             mockMvc.perform(
                     post("/links")
                             .accept(MediaType.APPLICATION_JSON)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(LINK))
+                            .content(objectMapper.writeValueAsString(LINK_REQUEST))
             )
                     .andExpect(status().isCreated())
-                    .andExpect(content().string(containsString(LINK.getTitle())));
+                    .andExpect(content().string(containsString(LINK_REQUEST.getTitle())));
         }
     }
 
@@ -166,9 +170,9 @@ class LinkControllerTest {
         @DisplayName("존재하는 링크 id와 링크 수정 정보가 주어진다면")
         class Context_with_exist_link_id {
             long givenLinkId = LinkTestFixture.EXIST_ID;
-            Link updateSource = LinkTestFixture.UPDATE_LINK;
+            LinkData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
 
-            @Test
+            @ControllerTest
             @DisplayName("OK 코드와 수정된 링크를 응답한다")
             void It_returns_ok_status_with_updated_link() throws Exception {
                 mockMvc.perform(
@@ -186,9 +190,9 @@ class LinkControllerTest {
         @DisplayName("존재하지 않는 링크 id와 링크 수정 정보가 주어진다면")
         class Context_with_not_exist_link_id {
             long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
-            Link updateSource = LinkTestFixture.UPDATE_LINK;
+            LinkData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
 
-            @Test
+            @ControllerTest
             @DisplayName("NOT FOUND 코드를 응답한다")
             void It_returns_not_found_status() throws Exception {
                 mockMvc.perform(
@@ -211,7 +215,7 @@ class LinkControllerTest {
         class Context_with_exist_link_id {
             long givenLinkId = LinkTestFixture.EXIST_ID;
 
-            @Test
+            @ControllerTest
             @DisplayName("NO CONTENT 코드를 응답한다")
             void It_returns_no_content() throws Exception {
                 mockMvc.perform(
@@ -226,7 +230,7 @@ class LinkControllerTest {
         class Context_with_not_exist_link_id {
             long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
 
-            @Test
+            @ControllerTest
             @DisplayName("NOT FOUND 코드를 응답한다")
             void It_returns_not_found_status() throws Exception {
                 mockMvc.perform(
