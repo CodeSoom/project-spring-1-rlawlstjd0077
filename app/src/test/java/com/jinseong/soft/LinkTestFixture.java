@@ -56,13 +56,25 @@ public class LinkTestFixture {
 
     public static Link generateLink() {
         return Link.builder()
-                .id(LinkTestFixture.EXIST_ID)
+                .id(EXIST_ID)
                 .title(LINK_REQUEST.getTitle())
                 .description(LINK_REQUEST.getDescription())
                 .linkURL(LINK_REQUEST.getLinkURL())
-                .type(LinkTestFixture.TYPE)
-                .category(LinkTestFixture.CATEGORY)
+                .type(TYPE)
+                .category(CATEGORY)
                 .tags(Collections.singleton(TAG))
+                .build();
+    }
+
+    public static Link generateUpdateLink() {
+        return Link.builder()
+                .id(EXIST_ID)
+                .title(UPDATE_LINK_REQUEST.getTitle())
+                .description(UPDATE_LINK_REQUEST.getDescription())
+                .linkURL(UPDATE_LINK_REQUEST.getLinkURL())
+                .type(UPDATE_TYPE)
+                .category(UPDATE_CATEGORY)
+                .tags(Collections.singleton(UPDATE_TAG))
                 .build();
     }
 }
