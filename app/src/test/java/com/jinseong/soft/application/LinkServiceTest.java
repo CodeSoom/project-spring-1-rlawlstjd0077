@@ -3,6 +3,7 @@ package com.jinseong.soft.application;
 import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.Category;
+import com.jinseong.soft.domain.LikeRepository;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.domain.Type;
@@ -38,12 +39,13 @@ class LinkServiceTest {
         TagService tagService = Mockito.mock(TagService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         TypeService typeService = Mockito.mock(TypeService.class);
-
+        LikeRepository likeRepository = Mockito.mock(LikeRepository.class);
         linkService = new LinkService(
                 linkRepository,
                 categoryService,
                 typeService,
-                tagService
+                tagService,
+                likeRepository
         );
 
         given(linkRepository.findById(LinkTestFixture.EXIST_ID))
@@ -63,6 +65,8 @@ class LinkServiceTest {
                                 .title(invocation.getArgument(0))
                                 .build()
                 );
+        given(likeRepository.findByMemberAndRecipe(any(User.class), any(Link.class)))
+                .willReturn(Optional.empty());
     }
 
     @Nested

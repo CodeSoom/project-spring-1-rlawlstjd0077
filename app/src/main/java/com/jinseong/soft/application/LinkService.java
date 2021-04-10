@@ -1,6 +1,8 @@
 package com.jinseong.soft.application;
 
 import com.jinseong.soft.domain.Category;
+import com.jinseong.soft.domain.Like;
+import com.jinseong.soft.domain.LikeRepository;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.domain.Tag;
@@ -19,18 +21,21 @@ import javax.transaction.Transactional;
 @Transactional
 public class LinkService {
     private final LinkRepository linkRepository;
-    private final TagService tagService;
-    private final TypeService typeService;
     private final CategoryService categoryService;
+    private final TypeService typeService;
+    private final TagService tagService;
+    private final LikeRepository likeRepository;
 
     public LinkService(LinkRepository linkRepository,
                        CategoryService categoryService,
                        TypeService typeService,
-                       TagService tagService) {
+                       TagService tagService,
+                       LikeRepository likeRepository) {
         this.linkRepository = linkRepository;
-        this.tagService = tagService;
-        this.typeService = typeService;
         this.categoryService = categoryService;
+        this.typeService = typeService;
+        this.tagService = tagService;
+        this.likeRepository = likeRepository;
     }
 
     public List<Link> getLinks() {
@@ -62,7 +67,20 @@ public class LinkService {
 
     public void addLike(Long id, User user) {
         Link link = findLink(id);
-        
+
+        if (!isAlreadyLike(user, link)) {
+            Like like = Like.builder()
+                    .link(link)
+                    .user(user)
+                    .build();
+            likeRepository.save(like);
+            link.addLike(like);
+        }
+    }
+
+    private boolean isAlreadyLike(User user, Link link) {
+        return likeRepository.findByMemberAndRecipe(user, link)
+                .isPresent();
     }
 
     private Link convertRequestDataToLink(LinkData requestData) {
@@ -78,7 +96,6 @@ public class LinkService {
                 .stream()
                 .map(tagService::getOrCreateTag)
                 .collect(Collectors.toSet());
-
 
         return Link.builder()
                 .title(requestData.getTitle())

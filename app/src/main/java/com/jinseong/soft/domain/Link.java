@@ -68,7 +68,7 @@ public class Link extends DateAudit {
     private User user;
 
     @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
-    Set<Like> likes = new HashSet<>();
+    private Set<Like> likes = new HashSet<>();
 
     /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
@@ -83,8 +83,8 @@ public class Link extends DateAudit {
         this.category = source.getCategory();
     }
 
-    public void addLike(Tag tag) {
-        this.tags.add(tag);
+    public void addLike(Like like) {
+        this.likes.add(like);
     }
 
     public int getLikeCount() {

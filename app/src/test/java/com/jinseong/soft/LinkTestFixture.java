@@ -5,8 +5,8 @@ import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.Tag;
 import com.jinseong.soft.domain.Type;
 import com.jinseong.soft.dto.LinkData;
-
 import java.util.Collections;
+import java.util.HashSet;
 
 public class LinkTestFixture {
     public static final Category CATEGORY = Category.builder()
@@ -63,6 +63,7 @@ public class LinkTestFixture {
                 .type(TYPE)
                 .category(CATEGORY)
                 .tags(Collections.singleton(TAG))
+                .likes(new HashSet<>())
                 .build();
     }
 
@@ -75,6 +76,7 @@ public class LinkTestFixture {
                 .type(UPDATE_TYPE)
                 .category(UPDATE_CATEGORY)
                 .tags(Collections.singleton(UPDATE_TAG))
+                .likes(new HashSet<>())
                 .build();
     }
 }
