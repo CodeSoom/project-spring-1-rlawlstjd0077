@@ -1,21 +1,22 @@
 package com.jinseong.soft.application;
 
 import com.jinseong.soft.LinkTestFixture;
+import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.Category;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.domain.Type;
+import com.jinseong.soft.domain.User;
 import com.jinseong.soft.dto.LinkData;
 import com.jinseong.soft.errors.LinkNotFoundException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -241,6 +242,34 @@ class LinkServiceTest {
             @DisplayName("링크를 찾을 수 없다는 예외를 던진다")
             void it_returns_link_not_found_exception() {
                 assertThrows(LinkNotFoundException.class, () -> linkService.deleteLink(givenLinkID));
+            }
+        }
+    }
+
+
+    @Nested
+    @DisplayName("addLike()")
+    class Describe_addLike {
+        @Nested
+        @DisplayName("존재하는 링크 id가 주어진다면")
+        class Context_exist_link_id {
+            Long givenLinkID = LinkTestFixture.EXIST_ID;
+
+            @BeforeEach
+            void setUp() {
+                linkService.createLink(LINK_REQUEST);
+            }
+
+            @Test
+            @DisplayName("주어진 id와 일치하는 링크 좋아요를 추가한다")
+            void it_return_deleted_link() {
+                User user = UserTestFixture.generateUser();
+                linkService.addLike(givenLinkID, user);
+
+                Link link = linkService.getLink(givenLinkID);
+
+                assertThat(link.getLikes()).isNotEmpty();
+                assertThat(link.getLikeCount()).isGreaterThan(0);
             }
         }
     }

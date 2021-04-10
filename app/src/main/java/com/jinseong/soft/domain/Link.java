@@ -1,14 +1,19 @@
 package com.jinseong.soft.domain;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * 링크 정보
@@ -62,6 +67,9 @@ public class Link extends DateAudit {
     @OneToOne
     private User user;
 
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
+    Set<Like> likes = new HashSet<>();
+
     /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
      *
@@ -75,11 +83,11 @@ public class Link extends DateAudit {
         this.category = source.getCategory();
     }
 
-    public void addTag(Tag tag) {
+    public void addLike(Tag tag) {
         this.tags.add(tag);
     }
 
-    public void addTag(List<Tag> tag) {
-        this.tags.addAll(tag);
+    public int getLikeCount() {
+        return likes.size();
     }
 }

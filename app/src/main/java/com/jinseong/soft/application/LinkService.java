@@ -1,14 +1,19 @@
 package com.jinseong.soft.application;
 
-import com.jinseong.soft.domain.*;
+import com.jinseong.soft.domain.Category;
+import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.domain.LinkRepository;
+import com.jinseong.soft.domain.Tag;
+import com.jinseong.soft.domain.Type;
+import com.jinseong.soft.domain.User;
 import com.jinseong.soft.dto.LinkData;
 import com.jinseong.soft.errors.LinkNotFoundException;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @Transactional
@@ -53,6 +58,11 @@ public class LinkService {
         Link link = findLink(id);
         linkRepository.delete(link);
         return link;
+    }
+
+    public void addLike(Long id, User user) {
+        Link link = findLink(id);
+        
     }
 
     private Link convertRequestDataToLink(LinkData requestData) {
