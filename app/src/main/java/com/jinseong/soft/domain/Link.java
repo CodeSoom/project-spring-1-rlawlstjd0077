@@ -57,6 +57,12 @@ public class Link extends DateAudit {
     private Set<Tag> tags = new HashSet<>();
 
     /**
+     * 링크 생성 유저
+     */
+    @OneToOne
+    private User user;
+
+    /**
      * 주어진 source로 부터 링크의 정보를 업데이트 합니다.
      *
      * @param source 링크 수정 정보
