@@ -21,5 +21,5 @@ public interface LikeRepository {
      * @param link 링크
      * @return 좋아요
      */
-    Optional<Like> findByMemberAndRecipe(User user, Link link);
+    Optional<Like> findByUserAndLink(User user, Link link);
 }

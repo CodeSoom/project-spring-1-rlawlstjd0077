@@ -65,7 +65,7 @@ class LinkServiceTest {
                                 .title(invocation.getArgument(0))
                                 .build()
                 );
-        given(likeRepository.findByMemberAndRecipe(any(User.class), any(Link.class)))
+        given(likeRepository.findByUserAndLink(any(User.class), any(Link.class)))
                 .willReturn(Optional.empty());
     }
 
