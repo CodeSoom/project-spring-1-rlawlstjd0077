@@ -2,12 +2,23 @@ package com.jinseong.soft.controllers;
 
 import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.domain.User;
+import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.dto.LinkData;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
+import com.jinseong.soft.errors.UserNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 링크 HTTP 요청 핸들러
@@ -16,9 +27,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/links")
 public class LinkController {
     private final LinkService linkService;
+    private final UserRepository userRepository;
 
-    public LinkController(LinkService linkService) {
+    public LinkController(LinkService linkService, UserRepository userRepository) {
         this.linkService = linkService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -56,7 +69,9 @@ public class LinkController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public LinkData createLink(@RequestBody LinkData source) {
-        Link link = linkService.createLink(source);
+        User user = getRequestedUser();
+
+        Link link = linkService.createLink(source, user);
         return LinkData.convertLinkToLinkData(link);
     }
 
@@ -77,5 +92,17 @@ public class LinkController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLink(@PathVariable Long id) {
         linkService.deleteLink(id);
+    }
+
+    private User getRequestedUser() {
+        String email = getEmailFromAuthentication();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    private String getEmailFromAuthentication() {
+        return SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
     }
 }

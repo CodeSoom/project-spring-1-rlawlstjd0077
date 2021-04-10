@@ -42,8 +42,9 @@ public class LinkService {
         return linkRepository.findAll();
     }
 
-    public Link createLink(LinkData linkData) {
+    public Link createLink(LinkData linkData, User user) {
         Link link = convertRequestDataToLink(linkData);
+        link.setCreatedBy(user);
         return linkRepository.save(link);
     }
 
@@ -79,7 +80,7 @@ public class LinkService {
     }
 
     private boolean isAlreadyLike(User user, Link link) {
-        return likeRepository.findByMemberAndRecipe(user, link)
+        return likeRepository.findByUserAndLink(user, link)
                 .isPresent();
     }
 
