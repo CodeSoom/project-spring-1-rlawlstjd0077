@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Linker!</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="http://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body>
 <h3 style="text-align:center; margin-top: 1em;">링크 등록하기</h3>
 <div class="col-md-12" style="display: flex; justify-content: center;">
@@ -68,7 +56,6 @@
                 <div class="alert alert-info" role="alert">
                     링크를 나타낼 수 있는 주제를 입력해주세요. 태크를 입력하고 엔터를 입력하세요.
                 </div>
-                <div id="whitelist" th:text="${whitelist}" hidden></div>
                 <div id="tags" class="chips chips-placeholder"></div>
             </div>
         </form>
@@ -78,9 +65,6 @@
         </div>
     </div>
 </div>
-<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script th:src="@{/webjars/materializecss/1.0.0/js/materialize.min.js}"></script>
 <script src="/js/app/create-link.js"></script>
 </body>
 </html>
