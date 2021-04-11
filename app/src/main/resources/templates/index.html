@@ -7,8 +7,10 @@
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-6">
-            <a href="/create-link" role="button" class="btn btn-primary">링크 등록</a>
-            <a href="/login" class="btn btn-success active" role="button">Login</a>
+            <a href="/create-link" role="button" class="btn btn-primary" th:if="${user}">링크 등록</a>
+            <a href="/login" class="btn btn-success active" role="button" th:unless="${user}">Login</a>
+            <a href="/logout" class="btn btn-success active" role="button" th:if="${user}">Logout</a>
+            <h4 th:if="${user}">[[${user}]] 님 환영합니다!</h4>
         </div>
     </div>
     <br>
@@ -30,7 +32,7 @@
             <tr th:each="link : ${links}">
                 <td id="id" hidden th:value="${link.id}"></td>
                 <td><span th:text="${link.title}"></span></td>
-                <td><span th:text="${link.linkURL}"></span></td>
+                <td><a target="_blank" th:href="@{${link.linkURL}}">[[${link.linkURL}]]</a></td>
                 <td>
                     <div class="chip" style="background-color:#E7B3C0">[[${link.category}]]</div>
                 </td>
