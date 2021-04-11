@@ -1,6 +1,8 @@
 package com.jinseong.soft.controllers;
 
 import com.jinseong.soft.application.LinkService;
+import com.jinseong.soft.domain.Link;
+import com.jinseong.soft.domain.Tag;
 import com.jinseong.soft.dto.LinkData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,15 @@ public class IndexController {
 
     @GetMapping("update-link/{id}")
     public String updateLink(@PathVariable Long id, Model model) {
-        model.addAttribute("link", linkService.getLink(id));
+        Link link = linkService.getLink(id);
+        String tags = link.getTags()
+                .stream()
+                .map(Tag::getTitle)
+                .collect(Collectors.joining(","));
+
+        model.addAttribute("link", LinkData.convertLinkToLinkData(link));
+        model.addAttribute("tags", tags);
+        
         return "update-link";
     }
 }
