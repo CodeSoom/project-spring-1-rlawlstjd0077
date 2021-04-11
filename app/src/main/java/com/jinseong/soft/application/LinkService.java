@@ -1,21 +1,14 @@
 package com.jinseong.soft.application;
 
-import com.jinseong.soft.domain.Category;
-import com.jinseong.soft.domain.Like;
-import com.jinseong.soft.domain.LikeRepository;
-import com.jinseong.soft.domain.Link;
-import com.jinseong.soft.domain.LinkRepository;
-import com.jinseong.soft.domain.Tag;
-import com.jinseong.soft.domain.Type;
-import com.jinseong.soft.domain.User;
-import com.jinseong.soft.dto.LinkData;
+import com.jinseong.soft.domain.*;
+import com.jinseong.soft.dto.LinkRequestData;
 import com.jinseong.soft.errors.LinkNotFoundException;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,15 +35,15 @@ public class LinkService {
         return linkRepository.findAll();
     }
 
-    public Link createLink(LinkData linkData, User user) {
-        Link link = convertRequestDataToLink(linkData);
+    public Link createLink(LinkRequestData linkRequestData, User user) {
+        Link link = convertRequestDataToLink(linkRequestData);
         link.setCreatedUser(user);
         return linkRepository.save(link);
     }
 
-    public Link updateLink(Long id, LinkData linkData) {
+    public Link updateLink(Long id, LinkRequestData linkRequestData) {
         Link link = findLink(id);
-        Link updateSource = convertRequestDataToLink(linkData);
+        Link updateSource = convertRequestDataToLink(linkRequestData);
 
         link.changeWith(updateSource);
         return link;
@@ -84,7 +77,7 @@ public class LinkService {
                 .isPresent();
     }
 
-    private Link convertRequestDataToLink(LinkData requestData) {
+    private Link convertRequestDataToLink(LinkRequestData requestData) {
         Category category = categoryService.getOrCreateCategory(
                 requestData.getCategory()
         );

@@ -3,7 +3,7 @@ package com.jinseong.soft.controllers;
 import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.Tag;
-import com.jinseong.soft.dto.LinkData;
+import com.jinseong.soft.dto.LinkResponseData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +22,9 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model) {
-        List<LinkData> links = linkService.getLinks()
+        List<LinkResponseData> links = linkService.getLinks()
                 .stream()
-                .map(LinkData::convertLinkToLinkData)
+                .map(LinkResponseData::convertLinkToLinkData)
                 .collect(Collectors.toList());
 
         model.addAttribute("links", links);
@@ -39,9 +39,9 @@ public class IndexController {
                 .map(Tag::getTitle)
                 .collect(Collectors.joining(","));
 
-        model.addAttribute("link", LinkData.convertLinkToLinkData(link));
+        model.addAttribute("link", LinkResponseData.convertLinkToLinkData(link));
         model.addAttribute("tags", tags);
-        
+
         return "update-link";
     }
 }
