@@ -60,7 +60,7 @@ class LinkRepositoryTest {
                 .category(category)
                 .type(type)
                 .tags(Collections.singleton(tag))
-                .user(user)
+                .createdUser(user)
                 .build();
 
         Long id = linkRepository.save(source).getId();
@@ -70,7 +70,7 @@ class LinkRepositoryTest {
         assertThat(link.getCategory()).isEqualTo(category);
         assertThat(link.getType()).isEqualTo(type);
         assertThat(link.getTags()).contains(tag);
-        assertThat(link.getUser()).isEqualTo(user);
+        assertThat(link.getCreatedUser()).isEqualTo(user);
         System.out.println("====" + link.getCreateAt());
     }
 }

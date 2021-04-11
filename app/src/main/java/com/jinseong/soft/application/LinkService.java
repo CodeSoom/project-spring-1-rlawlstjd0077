@@ -44,7 +44,7 @@ public class LinkService {
 
     public Link createLink(LinkData linkData, User user) {
         Link link = convertRequestDataToLink(linkData);
-        link.setCreatedBy(user);
+        link.setCreatedUser(user);
         return linkRepository.save(link);
     }
 

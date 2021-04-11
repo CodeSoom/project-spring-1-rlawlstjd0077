@@ -7,9 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -65,9 +63,8 @@ public class Link extends DateAudit {
     /**
      * 링크 생성 유저
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @Column(name = "created_by")
-    private User createdBy;
+    @OneToOne
+    private User createdUser;
 
     @OneToMany(mappedBy = "link")
     private Set<Like> likes = new HashSet<>();
@@ -93,7 +90,7 @@ public class Link extends DateAudit {
         return likes.size();
     }
 
-    public void setCreatedBy(User user) {
-        this.createdBy = user;
+    public void setCreatedUser(User user) {
+        this.createdUser = user;
     }
 }
