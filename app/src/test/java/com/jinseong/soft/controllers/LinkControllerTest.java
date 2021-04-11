@@ -2,12 +2,13 @@ package com.jinseong.soft.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinseong.soft.LinkTestFixture;
+import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.User;
+import com.jinseong.soft.domain.UserRepository;
 import com.jinseong.soft.dto.LinkData;
 import com.jinseong.soft.errors.LinkNotFoundException;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,6 +19,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,6 +39,9 @@ class LinkControllerTest {
     private static final Link UPDATE_LINK = LinkTestFixture.generateUpdateLink();
     @MockBean
     LinkService linkService;
+
+    @MockBean
+    UserRepository userRepository;
 
     @Autowired
     MockMvc mockMvc;
@@ -60,6 +67,9 @@ class LinkControllerTest {
                 .willReturn(LINK);
         given(linkService.deleteLink(eq(LinkTestFixture.NOT_EXIST_ID)))
                 .willThrow(LinkNotFoundException.class);
+
+        given(userRepository.findByEmail("user"))
+                .willReturn(Optional.of(UserTestFixture.EXIST_USER));
     }
 
     @Nested
