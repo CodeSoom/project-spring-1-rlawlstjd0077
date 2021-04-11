@@ -30,6 +30,7 @@ class LinkServiceTest {
     private LinkRepository linkRepository;
     private static final LinkData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
     private static final Link LINK = LinkTestFixture.generateLink();
+    private static final User USER = UserTestFixture.generateUser();
 
     private static final Long NOT_EXIST_ID = 1000L;
 
@@ -120,7 +121,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
                 given(linkRepository.findById(LinkTestFixture.EXIST_ID))
                         .willReturn(Optional.of(LinkTestFixture.generateLink()));
             }
@@ -159,7 +160,7 @@ class LinkServiceTest {
         @Test
         @DisplayName("주어진 링크를 저장한 뒤 반환한다.")
         void it_returns_saved_link() {
-            Link link = linkService.createLink(givenLink);
+            Link link = linkService.createLink(givenLink, USER);
 
             assertThat(link.getTitle()).isEqualTo(givenLink.getTitle());
             assertThat(link.getLinkURL()).isEqualTo(givenLink.getLinkURL());
@@ -181,7 +182,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
             }
 
             @Test
@@ -221,7 +222,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
             }
 
             @Test
@@ -261,7 +262,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
             }
 
             @Test
