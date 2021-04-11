@@ -31,11 +31,6 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("create-link")
-    public String createLink() {
-        return "create-link";
-    }
-
     @GetMapping("update-link/{id}")
     public String updateLink(@PathVariable Long id, Model model) {
         Link link = linkService.getLink(id);
