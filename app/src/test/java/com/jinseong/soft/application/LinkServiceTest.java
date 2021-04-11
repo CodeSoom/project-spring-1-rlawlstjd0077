@@ -3,6 +3,7 @@ package com.jinseong.soft.application;
 import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.UserTestFixture;
 import com.jinseong.soft.domain.Category;
+import com.jinseong.soft.domain.LikeRepository;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.LinkRepository;
 import com.jinseong.soft.domain.Type;
@@ -29,6 +30,7 @@ class LinkServiceTest {
     private LinkRepository linkRepository;
     private static final LinkData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
     private static final Link LINK = LinkTestFixture.generateLink();
+    private static final User USER = UserTestFixture.generateUser();
 
     private static final Long NOT_EXIST_ID = 1000L;
 
@@ -38,12 +40,13 @@ class LinkServiceTest {
         TagService tagService = Mockito.mock(TagService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         TypeService typeService = Mockito.mock(TypeService.class);
-
+        LikeRepository likeRepository = Mockito.mock(LikeRepository.class);
         linkService = new LinkService(
                 linkRepository,
                 categoryService,
                 typeService,
-                tagService
+                tagService,
+                likeRepository
         );
 
         given(linkRepository.findById(LinkTestFixture.EXIST_ID))
@@ -63,6 +66,8 @@ class LinkServiceTest {
                                 .title(invocation.getArgument(0))
                                 .build()
                 );
+        given(likeRepository.findByUserAndLink(any(User.class), any(Link.class)))
+                .willReturn(Optional.empty());
     }
 
     @Nested
@@ -116,7 +121,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
                 given(linkRepository.findById(LinkTestFixture.EXIST_ID))
                         .willReturn(Optional.of(LinkTestFixture.generateLink()));
             }
@@ -155,7 +160,7 @@ class LinkServiceTest {
         @Test
         @DisplayName("주어진 링크를 저장한 뒤 반환한다.")
         void it_returns_saved_link() {
-            Link link = linkService.createLink(givenLink);
+            Link link = linkService.createLink(givenLink, USER);
 
             assertThat(link.getTitle()).isEqualTo(givenLink.getTitle());
             assertThat(link.getLinkURL()).isEqualTo(givenLink.getLinkURL());
@@ -177,7 +182,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
             }
 
             @Test
@@ -217,7 +222,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
             }
 
             @Test
@@ -257,7 +262,7 @@ class LinkServiceTest {
 
             @BeforeEach
             void setUp() {
-                linkService.createLink(LINK_REQUEST);
+                linkService.createLink(LINK_REQUEST, USER);
             }
 
             @Test

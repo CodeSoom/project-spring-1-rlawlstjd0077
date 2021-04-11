@@ -1,5 +1,7 @@
 package com.jinseong.soft.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * 링크에 대한 좋아요 정보
@@ -17,6 +20,9 @@ import javax.persistence.ManyToOne;
 @Getter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "likes")
 public class Like {
     @Id
     @GeneratedValue
