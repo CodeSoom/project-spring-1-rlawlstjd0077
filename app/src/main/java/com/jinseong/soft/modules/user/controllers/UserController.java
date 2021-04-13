@@ -21,6 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * 주어진 유저 생성 정보로 유저를 생성한 뒤 응답합니다.
+     *
+     * @param registrationData 유저 생성 정보
+     * @return 생성된 유저 정보
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     UserResponseData createUser(@RequestBody UserRegistrationData registrationData) {
@@ -28,12 +34,24 @@ public class UserController {
         return getUserResultData(user);
     }
 
+    /**
+     * 대응되는 식별자의 유저를 삭제합니다.
+     *
+     * @param id 유저 식별자
+     */
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void destroyUser(@PathVariable Long id) {
         userService.destroyUser(id);
     }
 
+    /**
+     * 대응되는 식별자의 유저를 주어진 유저 정보로 수정한 뒤 응답합니다.
+     *
+     * @param id         유저 식별자
+     * @param updateData 유저 수정 정보
+     * @return 수정된 유저
+     */
     @PatchMapping("{id}")
     UserResponseData updateUser(
             @PathVariable Long id,
