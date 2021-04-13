@@ -81,18 +81,33 @@ public class LinkController {
         return LinkData.convertLinkToLinkData(link);
     }
 
+    /**
+     * 대응되는 식별자의 링크를 삭제합니다.
+     *
+     * @param id 링크 식별자
+     */
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLink(@PathVariable Long id) {
         linkService.deleteLink(id);
     }
 
+    /**
+     * 요청을 보낸 유저 정보를 반환합니다.
+     *
+     * @return 요청 유저
+     */
     private User getRequestedUser() {
         String email = getEmailFromAuthentication();
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
     }
 
+    /**
+     * 요청을 보낸 유저 email 정보를 반환합니다.
+     *
+     * @return 요청 유저 email
+     */
     private String getEmailFromAuthentication() {
         return SecurityContextHolder.getContext()
                 .getAuthentication()
