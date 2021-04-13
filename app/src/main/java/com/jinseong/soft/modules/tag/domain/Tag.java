@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+/**
+ * 링크 태그 정보.
+ */
 @Entity
 @Getter
 @EqualsAndHashCode(of = "id")
