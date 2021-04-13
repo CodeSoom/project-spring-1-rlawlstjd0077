@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 메인 Page의 HTTP 요청 핸들러.
+ */
 @Controller
-public class IndexController {
+public class MainController {
     private final LinkService linkService;
 
-    public IndexController(LinkService linkService) {
+    public MainController(LinkService linkService) {
         this.linkService = linkService;
     }
 
