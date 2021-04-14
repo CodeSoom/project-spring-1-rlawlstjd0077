@@ -2,7 +2,7 @@ package com.jinseong.soft.fixtures;
 
 import com.jinseong.soft.modules.category.domain.Category;
 import com.jinseong.soft.modules.link.domain.Link;
-import com.jinseong.soft.modules.link.dto.LinkData;
+import com.jinseong.soft.modules.link.dto.LinkRequestData;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.type.domain.Type;
 
@@ -37,7 +37,7 @@ public class LinkTestFixture {
     public static final long EXIST_ID = 0L;
     public static final long NOT_EXIST_ID = 10000L;
 
-    public static final LinkData LINK_REQUEST = LinkData.builder()
+    public static final LinkRequestData LINK_REQUEST = LinkRequestData.builder()
             .title("스프링 부트 문서")
             .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
             .category(CATEGORY.getTitle())
@@ -46,7 +46,7 @@ public class LinkTestFixture {
             .tags(Collections.singletonList(TAG.getTitle()))
             .build();
 
-    public static final LinkData UPDATE_LINK_REQUEST = LinkData.builder()
+    public static final LinkRequestData UPDATE_LINK_REQUEST = LinkRequestData.builder()
             .title("SpringBoot Document")
             .linkURL("https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/")
             .category(UPDATE_CATEGORY.getTitle())

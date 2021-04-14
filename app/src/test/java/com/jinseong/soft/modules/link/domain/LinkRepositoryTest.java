@@ -4,7 +4,7 @@ import com.jinseong.soft.fixtures.LinkTestFixture;
 import com.jinseong.soft.fixtures.UserTestFixture;
 import com.jinseong.soft.modules.category.domain.Category;
 import com.jinseong.soft.modules.category.domain.CategoryRepository;
-import com.jinseong.soft.modules.link.dto.LinkData;
+import com.jinseong.soft.modules.link.dto.LinkRequestData;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.tag.domain.TagRepository;
 import com.jinseong.soft.modules.type.domain.Type;
@@ -40,7 +40,7 @@ class LinkRepositoryTest {
 
     @Test
     void testSaveLinkRepository() {
-        LinkData linkData = LinkTestFixture.LINK_REQUEST;
+        LinkRequestData linkRequestData = LinkTestFixture.LINK_REQUEST;
 
         Category category =
                 categoryRepository.save(LinkTestFixture.CATEGORY);
@@ -52,9 +52,9 @@ class LinkRepositoryTest {
         User user = userRepository.save(UserTestFixture.EXIST_USER);
 
         Link source = Link.builder()
-                .title(linkData.getTitle())
-                .linkURL(linkData.getLinkURL())
-                .description(linkData.getDescription())
+                .title(linkRequestData.getTitle())
+                .linkURL(linkRequestData.getLinkURL())
+                .description(linkRequestData.getDescription())
                 .category(category)
                 .type(type)
                 .tags(Collections.singleton(tag))

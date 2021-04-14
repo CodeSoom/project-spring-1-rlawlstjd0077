@@ -70,11 +70,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'
     testCompile('org.springframework.security:spring-security-test')
-    
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     //Web jars
     compile 'org.webjars:jquery:3.4.1'
+    compile 'org.webjars:materializecss:1.0.0'
 }
 
 application {

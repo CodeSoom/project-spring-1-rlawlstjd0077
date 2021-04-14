@@ -7,7 +7,7 @@ import com.jinseong.soft.modules.like.domain.LikeRepository;
 import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.domain.LinkNotFoundException;
 import com.jinseong.soft.modules.link.domain.LinkRepository;
-import com.jinseong.soft.modules.link.dto.LinkData;
+import com.jinseong.soft.modules.link.dto.LinkRequestData;
 import com.jinseong.soft.modules.tag.application.TagService;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.type.application.TypeService;
@@ -56,12 +56,12 @@ public class LinkService {
     /**
      * 주어진 링크 정보, 링크 생성 유저로 링크를 생성한 뒤 반환합니다.
      *
-     * @param linkData 링크 정보
-     * @param user     링크 생성 유저
+     * @param linkRequestData 링크 정보
+     * @param user            링크 생성 유저
      * @return 생성된 링크
      */
-    public Link createLink(LinkData linkData, User user) {
-        Link link = convertRequestDataToLink(linkData);
+    public Link createLink(LinkRequestData linkRequestData, User user) {
+        Link link = convertRequestDataToLink(linkRequestData);
         link.setCreatedUser(user);
         return linkRepository.save(link);
     }
@@ -69,13 +69,13 @@ public class LinkService {
     /**
      * 주어진 링크 식별자와 일치하는 링크를 전달된 링크 정보로 수정한 뒤 반환합니다.
      *
-     * @param id       링크 식별자
-     * @param linkData 링크 수정 정보
+     * @param id              링크 식별자
+     * @param linkRequestData 링크 수정 정보
      * @return 수정된 링크
      */
-    public Link updateLink(Long id, LinkData linkData) {
+    public Link updateLink(Long id, LinkRequestData linkRequestData) {
         Link link = findLink(id);
-        Link updateSource = convertRequestDataToLink(linkData);
+        Link updateSource = convertRequestDataToLink(linkRequestData);
 
         link.changeWith(updateSource);
         return link;
@@ -140,7 +140,7 @@ public class LinkService {
      * @param requestData 링크 생성/수정 요청 정보
      * @return 링크 정보
      */
-    private Link convertRequestDataToLink(LinkData requestData) {
+    private Link convertRequestDataToLink(LinkRequestData requestData) {
         Category category = categoryService.getOrCreateCategory(
                 requestData.getCategory()
         );

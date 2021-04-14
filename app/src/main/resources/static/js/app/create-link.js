@@ -7,6 +7,10 @@ var main = {
         $('#btn-cancel').on('click', function () {
             window.location.href = '/';
         });
+        $('.chips-placeholder').chips({
+            placeholder: 'Enter a tag',
+            secondaryPlaceholder: '+Tag',
+        });
     },
     save : function () {
         var data = {
@@ -15,9 +19,7 @@ var main = {
             description: $('#description').val(),
             category: $('#category').val(),
             type: $('#type').val(),
-            tags: $('#tag').map(function() {
-                   return $(this).val();
-                 }).get()
+            tags: M.Chips.getInstance($('.chips-placeholder')).chipsData.map(e => e.tag)
         };
 
         $.ajax({

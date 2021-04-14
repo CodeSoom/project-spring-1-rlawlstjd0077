@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkData {
+public class LinkResponseData {
     private Long id;
 
     private String title;
@@ -30,21 +30,24 @@ public class LinkData {
 
     private String type;
 
+    private String user;
+
     private List<String> tags;
 
-    public static LinkData convertLinkToLinkData(Link link) {
+    public static LinkResponseData convertLinkToLinkData(Link link) {
         List<String> tags = link.getTags()
                 .stream()
                 .map(Tag::getTitle)
                 .collect(Collectors.toList());
 
-        return LinkData.builder()
+        return LinkResponseData.builder()
                 .id(link.getId())
                 .title(link.getTitle())
                 .linkURL(link.getLinkURL())
                 .description(link.getDescription())
                 .category(link.getCategory().getTitle())
                 .type(link.getType().getTitle())
+                .user(link.getCreatedUser().getName())
                 .tags(tags)
                 .build();
     }

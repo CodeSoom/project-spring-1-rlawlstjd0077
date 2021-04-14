@@ -2,7 +2,8 @@ package com.jinseong.soft.modules.link.controllers;
 
 import com.jinseong.soft.modules.link.application.LinkService;
 import com.jinseong.soft.modules.link.domain.Link;
-import com.jinseong.soft.modules.link.dto.LinkData;
+import com.jinseong.soft.modules.link.dto.LinkRequestData;
+import com.jinseong.soft.modules.link.dto.LinkResponseData;
 import com.jinseong.soft.modules.user.domain.User;
 import com.jinseong.soft.modules.user.domain.UserNotFoundException;
 import com.jinseong.soft.modules.user.domain.UserRepository;
@@ -33,10 +34,10 @@ public class LinkController {
      * @return 링크 목록
      */
     @GetMapping
-    public List<LinkData> getLinks() {
+    public List<LinkResponseData> getLinks() {
         List<Link> links = linkService.getLinks();
         return links.stream()
-                .map(LinkData::convertLinkToLinkData)
+                .map(LinkResponseData::convertLinkToLinkData)
                 .collect(Collectors.toList());
     }
 
@@ -47,9 +48,9 @@ public class LinkController {
      * @return 링크
      */
     @GetMapping("{id}")
-    public LinkData getLink(@PathVariable Long id) {
+    public LinkResponseData getLink(@PathVariable Long id) {
         Link link = linkService.getLink(id);
-        return LinkData.convertLinkToLinkData(link);
+        return LinkResponseData.convertLinkToLinkData(link);
     }
 
 
@@ -61,11 +62,11 @@ public class LinkController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LinkData createLink(@RequestBody LinkData source) {
+    public LinkResponseData createLink(@RequestBody LinkRequestData source) {
         User user = getRequestedUser();
 
         Link link = linkService.createLink(source, user);
-        return LinkData.convertLinkToLinkData(link);
+        return LinkResponseData.convertLinkToLinkData(link);
     }
 
     /**
@@ -76,9 +77,9 @@ public class LinkController {
      * @return 수정된 링크
      */
     @PatchMapping("{id}")
-    public LinkData updateLink(@PathVariable Long id, @RequestBody LinkData source) {
+    public LinkResponseData updateLink(@PathVariable Long id, @RequestBody LinkRequestData source) {
         Link link = linkService.updateLink(id, source);
-        return LinkData.convertLinkToLinkData(link);
+        return LinkResponseData.convertLinkToLinkData(link);
     }
 
     /**
