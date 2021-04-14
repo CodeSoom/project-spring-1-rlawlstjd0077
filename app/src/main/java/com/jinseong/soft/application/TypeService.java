@@ -5,6 +5,7 @@ import com.jinseong.soft.domain.TypeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,9 @@ public class TypeService {
                 .title(title)
                 .build();
         return typeRepository.save(type);
+    }
+
+    public List<Type> getTypes() {
+        return typeRepository.findAll();
     }
 }
