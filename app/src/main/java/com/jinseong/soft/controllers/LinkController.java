@@ -4,21 +4,15 @@ import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
-import com.jinseong.soft.dto.LinkData;
+import com.jinseong.soft.dto.LinkRequestData;
+import com.jinseong.soft.dto.LinkResponseData;
 import com.jinseong.soft.errors.UserNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 링크 HTTP 요청 핸들러
@@ -40,10 +34,10 @@ public class LinkController {
      * @return 링크 목록
      */
     @GetMapping
-    public List<LinkData> getLinks() {
+    public List<LinkResponseData> getLinks() {
         List<Link> links = linkService.getLinks();
         return links.stream()
-                .map(LinkData::convertLinkToLinkData)
+                .map(LinkResponseData::convertLinkToLinkData)
                 .collect(Collectors.toList());
     }
 
@@ -54,9 +48,9 @@ public class LinkController {
      * @return 링크
      */
     @GetMapping("{id}")
-    public LinkData getLink(@PathVariable Long id) {
+    public LinkResponseData getLink(@PathVariable Long id) {
         Link link = linkService.getLink(id);
-        return LinkData.convertLinkToLinkData(link);
+        return LinkResponseData.convertLinkToLinkData(link);
     }
 
 
@@ -68,11 +62,11 @@ public class LinkController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LinkData createLink(@RequestBody LinkData source) {
+    public LinkResponseData createLink(@RequestBody LinkRequestData source) {
         User user = getRequestedUser();
 
         Link link = linkService.createLink(source, user);
-        return LinkData.convertLinkToLinkData(link);
+        return LinkResponseData.convertLinkToLinkData(link);
     }
 
     /**
@@ -83,9 +77,9 @@ public class LinkController {
      * @return 수정된 링크
      */
     @PatchMapping("{id}")
-    public LinkData updateLink(@PathVariable Long id, @RequestBody LinkData source) {
+    public LinkResponseData updateLink(@PathVariable Long id, @RequestBody LinkRequestData source) {
         Link link = linkService.updateLink(id, source);
-        return LinkData.convertLinkToLinkData(link);
+        return LinkResponseData.convertLinkToLinkData(link);
     }
 
     @DeleteMapping("{id}")

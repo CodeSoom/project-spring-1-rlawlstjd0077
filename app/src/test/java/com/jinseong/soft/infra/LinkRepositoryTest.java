@@ -2,23 +2,14 @@ package com.jinseong.soft.infra;
 
 import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.UserTestFixture;
-import com.jinseong.soft.domain.Category;
-import com.jinseong.soft.domain.CategoryRepository;
-import com.jinseong.soft.domain.Link;
-import com.jinseong.soft.domain.LinkRepository;
-import com.jinseong.soft.domain.Tag;
-import com.jinseong.soft.domain.TagRepository;
-import com.jinseong.soft.domain.Type;
-import com.jinseong.soft.domain.TypeRepository;
-import com.jinseong.soft.domain.User;
-import com.jinseong.soft.domain.UserRepository;
-import com.jinseong.soft.dto.LinkData;
-import java.util.Collections;
+import com.jinseong.soft.domain.*;
+import com.jinseong.soft.dto.LinkRequestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +33,7 @@ class LinkRepositoryTest {
 
     @Test
     void testSaveLinkRepository() {
-        LinkData linkData = LinkTestFixture.LINK_REQUEST;
+        LinkRequestData linkRequestData = LinkTestFixture.LINK_REQUEST;
 
         Category category =
                 categoryRepository.save(LinkTestFixture.CATEGORY);
@@ -54,9 +45,9 @@ class LinkRepositoryTest {
         User user = userRepository.save(UserTestFixture.EXIST_USER);
 
         Link source = Link.builder()
-                .title(linkData.getTitle())
-                .linkURL(linkData.getLinkURL())
-                .description(linkData.getDescription())
+                .title(linkRequestData.getTitle())
+                .linkURL(linkRequestData.getLinkURL())
+                .description(linkRequestData.getDescription())
                 .category(category)
                 .type(type)
                 .tags(Collections.singleton(tag))

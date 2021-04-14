@@ -7,7 +7,7 @@ import com.jinseong.soft.application.LinkService;
 import com.jinseong.soft.domain.Link;
 import com.jinseong.soft.domain.User;
 import com.jinseong.soft.domain.UserRepository;
-import com.jinseong.soft.dto.LinkData;
+import com.jinseong.soft.dto.LinkRequestData;
 import com.jinseong.soft.errors.LinkNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(LinkController.class)
 class LinkControllerTest {
-    private static final LinkData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
+    private static final LinkRequestData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
     private static final Link LINK = LinkTestFixture.generateLink();
     private static final Link UPDATE_LINK = LinkTestFixture.generateUpdateLink();
     @MockBean
@@ -53,14 +53,14 @@ class LinkControllerTest {
     @WithMockUser
     void setUp() {
         Mockito.reset(linkService);
-        given(linkService.createLink(any(LinkData.class), any(User.class))).willReturn(LINK);
+        given(linkService.createLink(any(LinkRequestData.class), any(User.class))).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.EXIST_ID)).willReturn(LINK);
         given(linkService.getLink(LinkTestFixture.NOT_EXIST_ID))
                 .willThrow(LinkNotFoundException.class);
 
-        given(linkService.updateLink(eq(LinkTestFixture.EXIST_ID), any(LinkData.class)))
+        given(linkService.updateLink(eq(LinkTestFixture.EXIST_ID), any(LinkRequestData.class)))
                 .willReturn(UPDATE_LINK);
-        given(linkService.updateLink(eq(LinkTestFixture.NOT_EXIST_ID), any(LinkData.class)))
+        given(linkService.updateLink(eq(LinkTestFixture.NOT_EXIST_ID), any(LinkRequestData.class)))
                 .willThrow(LinkNotFoundException.class);
 
         given(linkService.deleteLink(eq(LinkTestFixture.EXIST_ID)))
@@ -180,7 +180,7 @@ class LinkControllerTest {
         @DisplayName("존재하는 링크 id와 링크 수정 정보가 주어진다면")
         class Context_with_exist_link_id {
             long givenLinkId = LinkTestFixture.EXIST_ID;
-            LinkData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
+            LinkRequestData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
 
             @ControllerTest
             @DisplayName("OK 코드와 수정된 링크를 응답한다")
@@ -200,7 +200,7 @@ class LinkControllerTest {
         @DisplayName("존재하지 않는 링크 id와 링크 수정 정보가 주어진다면")
         class Context_with_not_exist_link_id {
             long givenLinkId = LinkTestFixture.NOT_EXIST_ID;
-            LinkData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
+            LinkRequestData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
 
             @ControllerTest
             @DisplayName("NOT FOUND 코드를 응답한다")

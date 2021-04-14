@@ -1,17 +1,16 @@
 <!-- greeting.html -->
 <!DOCTYPE HTML>
 <html>
-<head>
-    <title>링크 목록</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="http://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body>
+<h3 style="text-align:center; margin-top: 1em;">LINKER!</h3>
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-6">
-            <a href="/create-link" role="button" class="btn btn-primary">링크 등록</a>
-            <a href="/login" class="btn btn-success active" role="button">Login</a>
+            <a href="/create-link" role="button" class="btn btn-primary" th:if="${user}">링크 등록</a>
+            <a href="/login" class="btn btn-success active" role="button" th:unless="${user}">Login</a>
+            <a href="/logout" class="btn btn-success active" role="button" th:if="${user}">Logout</a>
+            <h4 th:if="${user}">[[${user}]] 님 환영합니다!</h4>
         </div>
     </div>
     <br>
@@ -21,19 +20,31 @@
             <tr>
                 <th>링크 제목</th>
                 <th>링크 URL</th>
-                <th>카테고리</th>
-                <th>타입</th>
-                <th>수정하기</th>
-                <th>삭제하기</th>
+                <th width="10%">카테고리</th>
+                <th width="10%">타입</th>
+                <th width="10%">태그</th>
+                <th width="5%">등록 유저</th>
+                <th width="5%">수정하기</th>
+                <th width="5%">삭제하기</th>
             </tr>
             </thead>
             <tbody id="tbody">
             <tr th:each="link : ${links}">
                 <td id="id" hidden th:value="${link.id}"></td>
-                <td><span th:text="${link.title}"> Title </span></td>
-                <td><span th:text="${link.linkURL}"> Author </span></td>
-                <td><span th:text="${link.category}"> Desc </span></td>
-                <td><span th:text="${link.type}"> Desc </span></td>
+                <td><span th:text="${link.title}"></span></td>
+                <td><a target="_blank" th:href="@{${link.linkURL}}">[[${link.linkURL}]]</a></td>
+                <td>
+                    <div class="chip" style="background-color:#E7B3C0">[[${link.category}]]</div>
+                </td>
+                <td>
+                    <div class="chip" style="background-color:#7CE1BD">[[${link.type}]]</div>
+                </td>
+                <td>
+                    <span th:each="tag : ${link.tags}">
+                        <div class="chip" style="background-color:#C2B0BB">[[${tag}]]</div>
+                    </span>
+                </td>
+                <td><span th:text="${link.user}"></span></td>
                 <td>
                     <button id="btn-update">modify</button>
                 </td>
@@ -45,8 +56,6 @@
         </table>
     </div>
 </div>
-<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-<script src="http://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/app/index.js"></script>
 </body>
 </html>

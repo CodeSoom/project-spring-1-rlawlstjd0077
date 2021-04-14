@@ -2,22 +2,18 @@ package com.jinseong.soft.application;
 
 import com.jinseong.soft.LinkTestFixture;
 import com.jinseong.soft.UserTestFixture;
-import com.jinseong.soft.domain.Category;
-import com.jinseong.soft.domain.LikeRepository;
-import com.jinseong.soft.domain.Link;
-import com.jinseong.soft.domain.LinkRepository;
-import com.jinseong.soft.domain.Type;
-import com.jinseong.soft.domain.User;
-import com.jinseong.soft.dto.LinkData;
+import com.jinseong.soft.domain.*;
+import com.jinseong.soft.dto.LinkRequestData;
 import com.jinseong.soft.errors.LinkNotFoundException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,7 +24,7 @@ class LinkServiceTest {
 
     private LinkService linkService;
     private LinkRepository linkRepository;
-    private static final LinkData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
+    private static final LinkRequestData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
     private static final Link LINK = LinkTestFixture.generateLink();
     private static final User USER = UserTestFixture.generateUser();
 
@@ -155,7 +151,7 @@ class LinkServiceTest {
     @Nested
     @DisplayName("createLink()")
     class Describe_createLink {
-        LinkData givenLink = LINK_REQUEST;
+        LinkRequestData givenLink = LINK_REQUEST;
 
         @Test
         @DisplayName("주어진 링크를 저장한 뒤 반환한다.")
@@ -173,7 +169,7 @@ class LinkServiceTest {
     @Nested
     @DisplayName("updateLink()")
     class Describe_updateKLink {
-        LinkData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
+        LinkRequestData updateSource = LinkTestFixture.UPDATE_LINK_REQUEST;
 
         @Nested
         @DisplayName("존재하는 링크 id가 주어진다면")
