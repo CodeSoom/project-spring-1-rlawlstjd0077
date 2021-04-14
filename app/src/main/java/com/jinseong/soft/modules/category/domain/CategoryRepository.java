@@ -10,7 +10,7 @@ public interface CategoryRepository {
     /**
      * 저장된 모든 카테고리 목록을 반환합니다.
      *
-     * @return 카테코리 목록
+     * @return 카테고리 목록
      */
     List<Category> findAll();
 
