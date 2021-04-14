@@ -1,9 +1,10 @@
 package com.jinseong.soft.controllers;
 
+import com.jinseong.soft.application.CategoryService;
 import com.jinseong.soft.application.LinkService;
-import com.jinseong.soft.domain.Link;
-import com.jinseong.soft.domain.User;
-import com.jinseong.soft.domain.UserRepository;
+import com.jinseong.soft.application.TagService;
+import com.jinseong.soft.application.TypeService;
+import com.jinseong.soft.domain.*;
 import com.jinseong.soft.dto.LinkRequestData;
 import com.jinseong.soft.dto.LinkResponseData;
 import com.jinseong.soft.errors.UserNotFoundException;
@@ -20,11 +21,25 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/links")
 public class LinkController {
+    static final String CATEGORIES = "/categories";
+    static final String TYPES = "/types";
+    static final String TAGS = "/tags";
+
     private final LinkService linkService;
+    private final CategoryService categoryService;
+    private final TypeService typeService;
+    private final TagService tagService;
     private final UserRepository userRepository;
 
-    public LinkController(LinkService linkService, UserRepository userRepository) {
+    public LinkController(LinkService linkService,
+                          CategoryService categoryService,
+                          TypeService typeService,
+                          TagService tagService,
+                          UserRepository userRepository) {
         this.linkService = linkService;
+        this.categoryService = categoryService;
+        this.typeService = typeService;
+        this.tagService = tagService;
         this.userRepository = userRepository;
     }
 
@@ -86,6 +101,33 @@ public class LinkController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLink(@PathVariable Long id) {
         linkService.deleteLink(id);
+    }
+
+    @GetMapping(CATEGORIES)
+    public List<String> getCategories() {
+        List<Category> categories = categoryService.getCategories();
+
+        return categories.stream()
+                .map(Category::getTitle)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(TYPES)
+    public List<String> getTypes() {
+        List<Type> types = typeService.getTypes();
+
+        return types.stream()
+                .map(Type::getTitle)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(TAGS)
+    public List<String> getTags() {
+        List<Tag> tags = tagService.getTags();
+
+        return tags.stream()
+                .map(Tag::getTitle)
+                .collect(Collectors.toList());
     }
 
     private User getRequestedUser() {
