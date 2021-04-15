@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinseong.soft.ControllerTest;
 import com.jinseong.soft.fixtures.LinkTestFixture;
 import com.jinseong.soft.fixtures.UserTestFixture;
+import com.jinseong.soft.modules.category.application.CategoryService;
 import com.jinseong.soft.modules.link.application.LinkService;
 import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.domain.LinkNotFoundException;
 import com.jinseong.soft.modules.link.dto.LinkRequestData;
+import com.jinseong.soft.modules.tag.application.TagService;
+import com.jinseong.soft.modules.type.application.TypeService;
 import com.jinseong.soft.modules.user.domain.User;
 import com.jinseong.soft.modules.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +41,16 @@ class LinkControllerTest {
     private static final LinkRequestData LINK_REQUEST = LinkTestFixture.LINK_REQUEST;
     private static final Link LINK = LinkTestFixture.generateLink();
     private static final Link UPDATE_LINK = LinkTestFixture.generateUpdateLink();
+
+    @MockBean
+    TagService tagService;
+
+    @MockBean
+    TypeService typeService;
+
+    @MockBean
+    CategoryService categoryService;
+
     @MockBean
     LinkService linkService;
 
