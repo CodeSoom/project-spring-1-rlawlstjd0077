@@ -64,6 +64,7 @@ public class LinkTestFixture {
                 .type(TYPE)
                 .category(CATEGORY)
                 .tags(Collections.singleton(TAG))
+                .createdUser(UserTestFixture.EXIST_USER)
                 .likes(new HashSet<>())
                 .build();
     }
@@ -77,6 +78,7 @@ public class LinkTestFixture {
                 .type(UPDATE_TYPE)
                 .category(UPDATE_CATEGORY)
                 .tags(Collections.singleton(UPDATE_TAG))
+                .createdUser(UserTestFixture.EXIST_USER)
                 .likes(new HashSet<>())
                 .build();
     }
