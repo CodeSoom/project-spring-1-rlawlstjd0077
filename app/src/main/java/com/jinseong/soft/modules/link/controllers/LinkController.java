@@ -1,9 +1,15 @@
 package com.jinseong.soft.modules.link.controllers;
 
+import com.jinseong.soft.modules.category.application.CategoryService;
+import com.jinseong.soft.modules.category.domain.Category;
 import com.jinseong.soft.modules.link.application.LinkService;
 import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.dto.LinkRequestData;
 import com.jinseong.soft.modules.link.dto.LinkResponseData;
+import com.jinseong.soft.modules.tag.application.TagService;
+import com.jinseong.soft.modules.tag.domain.Tag;
+import com.jinseong.soft.modules.type.application.TypeService;
+import com.jinseong.soft.modules.type.domain.Type;
 import com.jinseong.soft.modules.user.domain.User;
 import com.jinseong.soft.modules.user.domain.UserNotFoundException;
 import com.jinseong.soft.modules.user.domain.UserRepository;
@@ -20,11 +26,25 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/links")
 public class LinkController {
+    static final String CATEGORIES = "/categories";
+    static final String TYPES = "/types";
+    static final String TAGS = "/tags";
+
     private final LinkService linkService;
+    private final CategoryService categoryService;
+    private final TypeService typeService;
+    private final TagService tagService;
     private final UserRepository userRepository;
 
-    public LinkController(LinkService linkService, UserRepository userRepository) {
+    public LinkController(LinkService linkService,
+                          CategoryService categoryService,
+                          TypeService typeService,
+                          TagService tagService,
+                          UserRepository userRepository) {
         this.linkService = linkService;
+        this.categoryService = categoryService;
+        this.typeService = typeService;
+        this.tagService = tagService;
         this.userRepository = userRepository;
     }
 
@@ -91,6 +111,33 @@ public class LinkController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLink(@PathVariable Long id) {
         linkService.deleteLink(id);
+    }
+
+    @GetMapping(CATEGORIES)
+    public List<String> getCategories() {
+        List<Category> categories = categoryService.getCategories();
+
+        return categories.stream()
+                .map(Category::getTitle)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(TYPES)
+    public List<String> getTypes() {
+        List<Type> types = typeService.getTypes();
+
+        return types.stream()
+                .map(Type::getTitle)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(TAGS)
+    public List<String> getTags() {
+        List<Tag> tags = tagService.getTags();
+
+        return tags.stream()
+                .map(Tag::getTitle)
+                .collect(Collectors.toList());
     }
 
     /**

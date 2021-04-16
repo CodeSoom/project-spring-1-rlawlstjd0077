@@ -76,6 +76,7 @@ dependencies {
     //Web jars
     compile 'org.webjars:jquery:3.4.1'
     compile 'org.webjars:materializecss:1.0.0'
+    compile 'org.webjars:bootstrap:4.6.0'
 }
 
 application {

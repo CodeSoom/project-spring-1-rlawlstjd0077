@@ -5,6 +5,7 @@ import com.jinseong.soft.modules.tag.domain.TagRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,5 +42,9 @@ public class TagService {
                 .title(title)
                 .build();
         return tagRepository.save(tag);
+    }
+
+    public List<Tag> getTags() {
+        return tagRepository.findAll();
     }
 }
