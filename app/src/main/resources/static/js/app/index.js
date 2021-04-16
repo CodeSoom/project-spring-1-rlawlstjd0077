@@ -10,7 +10,54 @@ var main = {
             var id = $(this).find('#deleteId').attr('value');
             _this.delete(id);
         });
+        $('.chips-placeholder').chips({
+            placeholder: 'Enter a tag',
+            secondaryPlaceholder: '+Tag',
+        });
+        _this.initCategory();
+        _this.initType();
+        _this.initTag();
     },
+
+    initCategory : function () {
+        $.get('/links/categories', function(tagArr){
+            var dataArr = {};
+            tagArr.forEach(key => dataArr[key] = null)
+
+            $('#category-filter').chips({
+                autocompleteOptions: {
+                  data: dataArr,
+                }
+            });
+        },'json');
+    },
+
+    initType: function() {
+        $.get('/links/types', function(typeArr){
+            var dataArr = {};
+            typeArr.forEach(key => dataArr[key] = null)
+
+            $('#type-filter').chips({
+                autocompleteOptions: {
+                  data: dataArr,
+                }
+            });
+        },'json');
+    },
+
+    initTag: function() {
+        $.get('/links/tags', function(tagArr){
+            var dataArr = {};
+            tagArr.forEach(key => dataArr[key] = null)
+
+            $('#tag-filter').chips({
+                autocompleteOptions: {
+                  data: dataArr,
+                }
+            });
+        },'json');
+    },
+
     delete : function (id) {
         $.ajax({
             type: 'DELETE',
