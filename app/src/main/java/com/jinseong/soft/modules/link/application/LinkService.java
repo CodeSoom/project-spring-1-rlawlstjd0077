@@ -13,12 +13,17 @@ import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.type.application.TypeService;
 import com.jinseong.soft.modules.type.domain.Type;
 import com.jinseong.soft.modules.user.domain.User;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
  * 링크에 대한 비즈니스 로직을 제공합니다.
@@ -51,6 +56,24 @@ public class LinkService {
      */
     public List<Link> getLinks() {
         return linkRepository.findAll();
+    }
+
+    public Page<Link> getLinks(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Link> links;
+        List<Link> allLinks = linkRepository.findAll();
+
+        if (allLinks.size() < startItem) {
+            links = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, allLinks.size());
+            links = allLinks.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(links, PageRequest.of(currentPage, pageSize), allLinks.size());
     }
 
     /**

@@ -4,14 +4,19 @@ import com.jinseong.soft.modules.link.application.LinkService;
 import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.dto.LinkResponseData;
 import com.jinseong.soft.modules.tag.domain.Tag;
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.security.Principal;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 메인 Page의 HTTP 요청 핸들러.
@@ -25,17 +30,42 @@ public class MainController {
     }
 
     @GetMapping
-    public String index(Model model, Principal principal) {
-        List<LinkResponseData> links = linkService.getLinks()
+    public String index(Model model,
+                        Principal principal,
+                        @RequestParam("page") Optional<Integer> page,
+                        @RequestParam("size") Optional<Integer> size
+    ) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(2);
+
+        Page<Link> linksPage =
+                linkService.getLinks(PageRequest.of(currentPage - 1, pageSize));
+
+        List<LinkResponseData> linkDatas = linksPage
                 .stream()
                 .map(LinkResponseData::convertLinkToLinkData)
                 .collect(Collectors.toList());
+
+        Page<LinkResponseData> linksDataPage = new PageImpl<>(
+                linkDatas,
+                linksPage.getPageable(),
+                linksPage.getTotalElements()
+        );
 
         if (principal != null) {
             model.addAttribute("user", principal.getName());
         }
 
-        model.addAttribute("links", links);
+        model.addAttribute("links", linksDataPage);
+
+        int totalPages = linksDataPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
         return "index";
     }
 
