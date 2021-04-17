@@ -2,12 +2,12 @@ var main = {
     init : function () {
         var _this = this;
         $('#btn-update').on('click', function () {
-            var id = $(this).find('#updateId').attr('value');
+            var id = $(this).find('#updateId').val();
             window.location.href = '/update-link/' + id;
         });
 
         $('#btn-delete').on('click', function () {
-            var id = $(this).find('#deleteId').attr('value');
+            var id = $(this).find('#deleteId').val();
             _this.delete(id);
         });
         $('.chips-placeholder').chips({
