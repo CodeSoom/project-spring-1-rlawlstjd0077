@@ -265,4 +265,33 @@ class LinkControllerTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("POST /links/like/{id}")
+    class Describe_POST_LINK_LIKE {
+        @Nested
+        @DisplayName("존재하는 링크 id에 대해서 처음으로 좋아요를 추가한 유저인경우")
+        class Context_with_exist_link_id_and_first_like_user {
+            long givenLinkId = LinkTestFixture.EXIST_ID;
+
+            @ControllerTest
+            @DisplayName("OK 코드와 true 값을 응답한다")
+            void It_returns_no_content() throws Exception {
+                mockMvc.perform(
+                        post("/links/like{id}", givenLinkId)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(LINK_REQUEST))
+                )
+                        .andExpect(status().isOk())
+                        .andExpect(content().string("true"));
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하는 링크 id에 대해서 이미 좋아요를 추가한 유저인경우")
+        class Context_with_exist_link_id_and_already_like_user {
+            long givenLinkId = LinkTestFixture.EXIST_ID;
+        }
+    }
 }
