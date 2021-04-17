@@ -34,6 +34,8 @@ public class LinkResponseData {
 
     private List<String> tags;
 
+    private Long likes;
+
     public static LinkResponseData convertLinkToLinkData(Link link) {
         List<String> tags = link.getTags()
                 .stream()
@@ -49,6 +51,7 @@ public class LinkResponseData {
                 .type(link.getType().getTitle())
                 .user(link.getCreatedUser().getName())
                 .tags(tags)
+                .likes((long) link.getLikes().size())
                 .build();
     }
 }
