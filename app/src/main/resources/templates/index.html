@@ -20,25 +20,31 @@
             <thead class="thead-strong">
             <tr>
                 <th width="30%">링크 제목</th>
-                <th width="25%">링크 URL</th>
-                <th width="6%">카테고리
+                <th width="14%">링크 URL</th>
+                <th width="9%">카테고리
                     <div id="category-filter" class="chips chips-placeholder"></div>
                 </th>
-                <th width="6%">타입
+                <th width="9%">타입
                     <div id="type-filter" class="chips chips-placeholder"></div>
                 </th>
-                <th width="18%">태그
+                <th width="20%">태그
                     <div id="tag-filter" class="chips chips-placeholder"></div>
                 </th>
-                <th width="2%">설명</th>
                 <th width="6%">등록 유저</th>
+                <th width="5%"></th>
                 <th width="7%"></th>
             </tr>
             </thead>
             <tbody id="tbody">
             <tr th:each="link : ${links}">
                 <td id="id" hidden th:value="${link.id}"></td>
-                <td><span th:text="${link.title}"></span></td>
+                <td>
+                    <span th:text="${link.title}"></span>
+                    <a class="waves-effect waves-teal btn-flat modal-trigger" href="#modal-description">
+                        <input type="hidden" id="update-id" name="update-id" value="3487">
+                        <i class="material-icons">description</i>
+                    </a>
+                </td>
                 <td><a target="_blank" th:href="@{${link.linkURL}}">[[${link.linkURL}]]</a></td>
                 <td>
                     <div class="chip" style="background-color:#E7B3C0">[[${link.category}]]</div>
@@ -52,13 +58,16 @@
                     </span>
                 </td>
                 <td>
-                    <a class="waves-effect waves-teal btn-flat modal-trigger" href="#modal-description">
-                        <input type="hidden" id="update-id" name="update-id" value="3487">
-                        <i class="material-icons">description</i>
-                    </a>
-                </td>
-                <td>
                     <div class="chip" style="background-color:#EE8321">[[${link.user}]]</div>
+                </td>
+
+                <td>
+                    <button class="btn-secondary like-review" style="display: inline;">
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                        <span id="counter"></span>
+                    </button>
+                </td>
+
                 <td>
                     <span th:if="${user}">
                         <span th:if="${link.user == user}">

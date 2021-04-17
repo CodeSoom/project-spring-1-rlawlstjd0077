@@ -72,3 +72,20 @@ var main = {
 };
 
 main.init();
+
+/* var likes = 0; */
+$(function(){
+  likes = document.getElementById("counter").innerHTML;
+	$(document).on('click', '.like-review', function(e) {
+    likes++;
+		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>' + likes);
+		$(this).children('.fa-heart').addClass('animate-like');
+	});
+});
+
+function updateLikes(l){
+  likes = l.val();
+    likes++;
+    $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>' + likes);
+		$(this).children('.fa-heart').addClass('animate-like');
+}
