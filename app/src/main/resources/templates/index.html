@@ -11,7 +11,7 @@
                     class="material-icons">add</i></a>
             <a href="/login" class="btn btn-success active" role="button" th:unless="${user}">Login</a>
             <a href="/logout" class="btn btn-success active" role="button" th:if="${user}">Logout</a>
-            <h4 th:if="${user}">[[${user}]] 님 환영합니다!</h4>
+            <h4 id="user" th:if="${user}">[[${user}]] 님 환영합니다!</h4>
         </div>
     </div>
     <br>

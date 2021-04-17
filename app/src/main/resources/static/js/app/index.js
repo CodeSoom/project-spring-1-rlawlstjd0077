@@ -75,17 +75,14 @@ main.init();
 
 /* var likes = 0; */
 $(function(){
-  likes = document.getElementById("counter").innerHTML;
+    likes = document.getElementById("counter").innerHTML;
 	$(document).on('click', '.like-review', function(e) {
-    likes++;
+	    if (document.getElementById("user") == null) {
+            alert("로그인이 필요한 기능입니다!");
+            return;
+        }
+        likes++;
 		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>' + likes);
 		$(this).children('.fa-heart').addClass('animate-like');
 	});
 });
-
-function updateLikes(l){
-  likes = l.val();
-    likes++;
-    $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>' + likes);
-		$(this).children('.fa-heart').addClass('animate-like');
-}
