@@ -8,11 +8,16 @@ var main = {
         $('#btn-cancel').on('click', function () {
              window.location.href = '/';
         });
-        var tags_str = $('#btn-tags_str').text();
+        var tags_str = $('#tags_str').text();
         var tags_arr = tags_str.split(",");
         var chips_arr = tags_arr.map(e => ({tag: e}));
-        $('.chips-placeholder').chips({
+        /*$('.chips-placeholder').chips({
             data: JSON.stringify(chips_arr),
+            placeholder: 'Enter a tag',
+            secondaryPlaceholder: '+Tag',
+        });*/
+        $('.chips-placeholder').chips({
+            data: chips_arr,
             placeholder: 'Enter a tag',
             secondaryPlaceholder: '+Tag',
         });
@@ -24,9 +29,7 @@ var main = {
                 description: $('#description').val(),
                 category: $('#category').val(),
                 type: $('#type').val(),
-                tags: $('#tag').map(function() {
-                                   return $(this).val();
-                                 }).get()
+                tags: M.Chips.getInstance($('.chips-placeholder')).chipsData.map(e => e.tag)
             };
 
             $.ajax({
