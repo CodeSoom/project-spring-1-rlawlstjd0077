@@ -109,17 +109,20 @@ public class LinkService {
      * @param id   링크 식별자
      * @param user 좋아요를 누른 유저
      */
-    public void addLike(Long id, User user) {
+    public boolean addLike(Long id, User user) {
         Link link = findLink(id);
 
-        if (!isAlreadyLike(user, link)) {
-            Like like = Like.builder()
-                    .link(link)
-                    .user(user)
-                    .build();
-            likeRepository.save(like);
-            link.addLike(like);
+        if (isAlreadyLike(user, link)) {
+            return false;
         }
+
+        Like like = Like.builder()
+                .link(link)
+                .user(user)
+                .build();
+        likeRepository.save(like);
+        link.addLike(like);
+        return true;
     }
 
     /**

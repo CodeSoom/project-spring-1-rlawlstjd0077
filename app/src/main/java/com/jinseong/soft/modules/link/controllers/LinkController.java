@@ -113,6 +113,23 @@ public class LinkController {
         linkService.deleteLink(id);
     }
 
+    /**
+     * 대응되는 식별자의 링크에 좋아요를 추가하고 유저가 처음으로 좋아요를 눌렀다면 true, 그렇지 않으면 false를 응답합니다.
+     *
+     * @param id
+     */
+    @PostMapping("/like/{id}")
+    public boolean addLike(@PathVariable Long id) {
+        User user = getRequestedUser();
+
+        return linkService.addLike(id, user);
+    }
+
+    /**
+     * 존재하는 모든 카테고리 목록을 응답합니다.
+     *
+     * @return 카테고리 목록
+     */
     @GetMapping(CATEGORIES)
     public List<String> getCategories() {
         List<Category> categories = categoryService.getCategories();
@@ -122,6 +139,11 @@ public class LinkController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 존재하는 모든 타입 목록을 응답합니다.
+     *
+     * @return 타입 목록
+     */
     @GetMapping(TYPES)
     public List<String> getTypes() {
         List<Type> types = typeService.getTypes();
@@ -131,6 +153,11 @@ public class LinkController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 존재하는 모든 태그 목록을 응답합니다.
+     *
+     * @return 태그 목록
+     */
     @GetMapping(TAGS)
     public List<String> getTags() {
         List<Tag> tags = tagService.getTags();
