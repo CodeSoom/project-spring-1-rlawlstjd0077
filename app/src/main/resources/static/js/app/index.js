@@ -14,9 +14,36 @@ var main = {
             placeholder: 'Enter a tag',
             secondaryPlaceholder: '+Tag',
         });
+
+        $('.like-review').on('click', function () {
+            if (document.getElementById("user") == null) {
+                alert("로그인이 필요한 기능입니다!");
+                return;
+            }
+            var linkId = $(this).parent().parent().find('#id').attr('value');
+            var counter =  $(this).find('span')[0];
+            _this.addLike(linkId, counter);
+        });
+
         _this.initCategory();
         _this.initType();
         _this.initTag();
+    },
+
+    addLike : function(linkId, counter) {
+        likes = counter.innerHTML;
+
+        $.post('/links/like/' + linkId, function(status){
+            if (!status) {
+                alert("이미 좋아요를 누른 링크입니다!");
+                return;
+            }
+            likes++;
+            counter.innerText = likes
+            $(this).children('.fa-heart').addClass('animate-like');
+        },'json');
+
+
     },
 
     initCategory : function () {
@@ -72,3 +99,5 @@ var main = {
 };
 
 main.init();
+
+/* 좋아요 버튼 이벤트 처리 */
