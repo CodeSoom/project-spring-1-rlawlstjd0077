@@ -3,6 +3,7 @@ package com.jinseong.soft.modules.main;
 import com.jinseong.soft.modules.link.application.LinkService;
 import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.dto.LinkResponseData;
+import com.jinseong.soft.modules.main.dto.LinkFilterData;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import java.security.Principal;
 import java.util.List;
@@ -33,13 +34,17 @@ public class MainController {
     public String index(Model model,
                         Principal principal,
                         @RequestParam("page") Optional<Integer> page,
-                        @RequestParam("size") Optional<Integer> size
+                        @RequestParam("size") Optional<Integer> size,
+                        @RequestParam("filter") Optional<LinkFilterData> linkFilterData
     ) {
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(2);
+        int pageSize = size.orElse(20);
 
-        Page<Link> linksPage =
-                linkService.getLinks(PageRequest.of(currentPage - 1, pageSize));
+
+        Page<Link> linksPage = linkService.getLinks(
+                PageRequest.of(currentPage - 1, pageSize),
+                new LinkFilterData()
+        );
 
         List<LinkResponseData> linkDatas = linksPage
                 .stream()
