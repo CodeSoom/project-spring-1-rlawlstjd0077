@@ -10,10 +10,11 @@ import com.jinseong.soft.modules.type.application.TypeService;
 import com.jinseong.soft.modules.type.domain.Type;
 import com.jinseong.soft.modules.user.application.UserService;
 import com.jinseong.soft.modules.user.domain.User;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 
 @Component
 public class LinkFilterProvider {
@@ -116,6 +117,7 @@ public class LinkFilterProvider {
 
         List<User> users = filterData.getUsers()
                 .stream()
+                .filter(userService::isExistUserName)
                 .map(userService::findByUsername)
                 .collect(Collectors.toList());
 

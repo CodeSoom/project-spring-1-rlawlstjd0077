@@ -47,6 +47,14 @@ public interface UserRepository {
     boolean existsByEmail(String email);
 
     /**
+     * 전달받은 유저 이름과 일치하는 유저가 존재한다면 true를, 그렇지 않다면 false를 리턴합니다.
+     *
+     * @param username 유저 이름
+     * @return 유저 존재 여부
+     */
+    boolean existsByName(String username);
+
+    /**
      * 전달받은 email과 일치하는 유저를 반환합니다.
      *
      * @param email 유저 email
