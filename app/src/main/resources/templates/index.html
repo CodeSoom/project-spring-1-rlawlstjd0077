@@ -56,7 +56,7 @@
                 <td id="id" hidden th:value="${link.id}"></td>
                 <td>
                     <span th:text="${link.title}"></span>
-                    <a class="waves-effect waves-teal btn-flat modal-trigger" href="#modal-description">
+                    <a class="waves-effect waves-teal btn-flat modal-trigger">
                         <input type="hidden" id="update-id" name="update-id" value="3487">
                         <i class="material-icons">description</i>
                     </a>
@@ -105,8 +105,8 @@
     <ul class="pagination" style="display: flex; justify-content: center;">
         <li th:class="${pageNumber==links.number + 1} ? active : waves-effect"
             th:each="pageNumber : ${pageNumbers}">
-            <a th:href="@{/(size=${links.size}, page=${pageNumber})}" th:text=${pageNumber}>
-            </a>
+            <a class="btn-pagination" th:text=${pageNumber}></a>
+            <input id="page-value" type="hidden" th:value="|/?size=${links.size}&page=${pageNumber}|">
         </li>
     </ul>
 </div>

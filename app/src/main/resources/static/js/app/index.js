@@ -13,6 +13,17 @@ function init () {
         secondaryPlaceholder: '+Tag',
     });
 
+    $('.modal-trigger').on('click', function () {
+        alert('설명은 아직 준비중이에요 ㅠ.ㅠ 노여워 마세요')
+    });
+
+    $('.btn-pagination').on('click', function () {
+        var hrefLocation = $(this).parent().find('#page-value').val();
+        var filterUrl = getFilterURL();
+
+        location.href = hrefLocation + "&" + filterUrl;
+    });
+
     $('.like-review').on('click', function () {
         if (document.getElementById("user") == null) {
             alert("로그인이 필요한 기능입니다!");
@@ -121,6 +132,11 @@ function initUser() {
 }
 
 function searchData() {
+    var url = getFilterURL();
+    location.href = "/?" + url;
+}
+
+function getFilterURL() {
     var categories =
         M.Chips.getInstance($('#category-filter')).chipsData.map(e => e.tag);
     var types =
@@ -136,7 +152,7 @@ function searchData() {
             users
     }
 
-    location.href = '/?filter=' + encodeURIComponent(JSON.stringify(value));
+    return 'filter=' + encodeURIComponent(JSON.stringify(value));
 }
 
 function deleteLink(id) {
