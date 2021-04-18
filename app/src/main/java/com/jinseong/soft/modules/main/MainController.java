@@ -5,11 +5,6 @@ import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.dto.LinkResponseData;
 import com.jinseong.soft.modules.main.dto.LinkFilterData;
 import com.jinseong.soft.modules.tag.domain.Tag;
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * 메인 Page의 HTTP 요청 핸들러.
@@ -40,10 +41,11 @@ public class MainController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(20);
 
+        LinkFilterData filterData = linkFilterData.orElse(new LinkFilterData());
 
         Page<Link> linksPage = linkService.getLinks(
                 PageRequest.of(currentPage - 1, pageSize),
-                new LinkFilterData()
+                filterData
         );
 
         List<LinkResponseData> linkDatas = linksPage
@@ -70,6 +72,11 @@ public class MainController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+
+        model.addAttribute("categories", filterData.getCategories());
+        model.addAttribute("types", filterData.getTypes());
+        model.addAttribute("tags", filterData.getTags());
+        model.addAttribute("users", filterData.getUsers());
 
         return "index";
     }

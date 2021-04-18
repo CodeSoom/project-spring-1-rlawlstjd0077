@@ -49,15 +49,75 @@ function initCategory () {
         var dataArr = {};
         tagArr.forEach(key => dataArr[key] = null)
 
+        var arr = $('#category-init').find('input').toArray().map(e => e.value)
+        var chips_arr = arr.map(e => ({tag: e}));
+
         $('#category-filter').chips({
-            onChipAdd : () => {
-                searchData();
-            },
+            onChipAdd : () => { searchData(); },
+            onChipDelete : () => { searchData(); },
+            data: chips_arr,
             autocompleteOptions: {
               data: dataArr,
             }
         });
     },'json');
+}
+
+function initType() {
+    $.get('/links/types', function(typeArr){
+        var dataArr = {};
+        typeArr.forEach(key => dataArr[key] = null)
+
+        var arr = $('#type-init').find('input').toArray().map(e => e.value)
+        var chips_arr = arr.map(e => ({tag: e}));
+
+        $('#type-filter').chips({
+            onChipAdd : () => { searchData(); },
+            onChipDelete : () => { searchData(); },
+            data: chips_arr,
+            autocompleteOptions: {
+              data: dataArr,
+            }
+        });
+    },'json');
+}
+
+function initTag() {
+    $.get('/links/tags', function(tagArr){
+        var dataArr = {};
+        tagArr.forEach(key => dataArr[key] = null)
+
+        var arr = $('#tag-init').find('input').toArray().map(e => e.value)
+        var chips_arr = arr.map(e => ({tag: e}));
+
+        $('#tag-filter').chips({
+            onChipAdd : () => { searchData(); },
+            onChipDelete : () => { searchData(); },
+            data: chips_arr,
+            autocompleteOptions: {
+              data: dataArr,
+            }
+        });
+    },'json');
+}
+
+function initUser() {
+      $.get('/users', function(userArr){
+          var dataArr = {};
+          userArr.forEach(key => dataArr[key] = null)
+
+          var arr = $('#user-init').find('input').toArray().map(e => e.value)
+          var chips_arr = arr.map(e => ({tag: e}));
+
+          $('#user-filter').chips({
+              onChipAdd : () => { searchData(); },
+              onChipDelete : () => { searchData(); },
+              data: chips_arr,
+              autocompleteOptions: {
+                data: dataArr,
+              }
+          });
+      },'json');
 }
 
 function searchData() {
@@ -76,55 +136,7 @@ function searchData() {
             users
     }
 
-    $.ajax({
-        type: 'GET',
-        url: '/?filter=' + encodeURIComponent(JSON.stringify(value)),
-        dataType: 'json',
-        contentType:'application/json; charset=utf-8',
-    }).done(function() {
-        console.log('검색이 완료되었습니다.');
-    }).fail(function (error) {
-        alert(JSON.stringify(error));
-    });
-}
-
-function initType() {
-    $.get('/links/types', function(typeArr){
-        var dataArr = {};
-        typeArr.forEach(key => dataArr[key] = null)
-
-        $('#type-filter').chips({
-            autocompleteOptions: {
-              data: dataArr,
-            }
-        });
-    },'json');
-}
-
-function initTag() {
-    $.get('/links/tags', function(tagArr){
-        var dataArr = {};
-        tagArr.forEach(key => dataArr[key] = null)
-
-        $('#tag-filter').chips({
-            autocompleteOptions: {
-              data: dataArr,
-            }
-        });
-    },'json');
-}
-
-function initUser() {
-      $.get('/users', function(userArr){
-          var dataArr = {};
-          userArr.forEach(key => dataArr[key] = null)
-
-          $('#user-filter').chips({
-              autocompleteOptions: {
-                data: dataArr,
-              }
-          });
-      },'json');
+    location.href = '/?filter=' + encodeURIComponent(JSON.stringify(value));
 }
 
 function deleteLink(id) {
