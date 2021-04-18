@@ -5,8 +5,17 @@ import com.jinseong.soft.modules.user.domain.User;
 import com.jinseong.soft.modules.user.dto.UserRegistrationData;
 import com.jinseong.soft.modules.user.dto.UserResponseData;
 import com.jinseong.soft.modules.user.dto.UserUpdateData;
+import java.util.List;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 유저 HTTP 요청 핸들러
@@ -58,6 +67,17 @@ public class UserController {
             @RequestBody UserUpdateData updateData) {
         User user = userService.updateUser(id, updateData);
         return getUserResultData(user);
+    }
+
+
+    /**
+     * 존재하는 모든 유저 이름 목록을 응답합니다.
+     *
+     * @return 유저 이름 목록
+     */
+    @GetMapping
+    public List<String> getUsers() {
+        return userService.getUserNames();
     }
 
     /**

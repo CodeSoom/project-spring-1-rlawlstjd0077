@@ -8,17 +8,23 @@ import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.domain.LinkNotFoundException;
 import com.jinseong.soft.modules.link.domain.LinkRepository;
 import com.jinseong.soft.modules.link.dto.LinkRequestData;
+import com.jinseong.soft.modules.main.dto.LinkFilterData;
 import com.jinseong.soft.modules.tag.application.TagService;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.type.application.TypeService;
 import com.jinseong.soft.modules.type.domain.Type;
 import com.jinseong.soft.modules.user.domain.User;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
  * 링크에 대한 비즈니스 로직을 제공합니다.
@@ -31,17 +37,20 @@ public class LinkService {
     private final TypeService typeService;
     private final TagService tagService;
     private final LikeRepository likeRepository;
+    private final LinkFilterProvider linkFilterProvider;
 
     public LinkService(LinkRepository linkRepository,
                        CategoryService categoryService,
                        TypeService typeService,
                        TagService tagService,
-                       LikeRepository likeRepository) {
+                       LikeRepository likeRepository,
+                       LinkFilterProvider linkFilterProvider) {
         this.linkRepository = linkRepository;
         this.categoryService = categoryService;
         this.typeService = typeService;
         this.tagService = tagService;
         this.likeRepository = likeRepository;
+        this.linkFilterProvider = linkFilterProvider;
     }
 
     /**
@@ -51,6 +60,29 @@ public class LinkService {
      */
     public List<Link> getLinks() {
         return linkRepository.findAll();
+    }
+
+    public Page<Link> getLinks(
+            Pageable pageable,
+            LinkFilterData filterData
+    ) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Link> links;
+        List<Link> allLinks = linkRepository.findAll();
+
+        allLinks = linkFilterProvider.filterLinks(allLinks, filterData);
+
+        if (allLinks.size() < startItem) {
+            links = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, allLinks.size());
+            links = allLinks.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(links, PageRequest.of(currentPage, pageSize), allLinks.size());
     }
 
     /**
@@ -166,6 +198,7 @@ public class LinkService {
                 .tags(tags)
                 .build();
     }
+
 
     /**
      * 대응되는 식별자와 일치하는 링크를 반환합니다.

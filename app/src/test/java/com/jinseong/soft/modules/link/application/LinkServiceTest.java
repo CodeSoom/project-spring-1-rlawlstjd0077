@@ -13,15 +13,14 @@ import com.jinseong.soft.modules.tag.application.TagService;
 import com.jinseong.soft.modules.type.application.TypeService;
 import com.jinseong.soft.modules.type.domain.Type;
 import com.jinseong.soft.modules.user.domain.User;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,12 +44,14 @@ class LinkServiceTest {
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         TypeService typeService = Mockito.mock(TypeService.class);
         LikeRepository likeRepository = Mockito.mock(LikeRepository.class);
+        LinkFilterProvider filterProvider = Mockito.mock(LinkFilterProvider.class);
         linkService = new LinkService(
                 linkRepository,
                 categoryService,
                 typeService,
                 tagService,
-                likeRepository
+                likeRepository,
+                filterProvider
         );
 
         given(linkRepository.findById(LinkTestFixture.EXIST_ID))

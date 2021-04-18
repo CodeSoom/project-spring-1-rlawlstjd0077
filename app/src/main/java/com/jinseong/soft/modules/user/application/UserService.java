@@ -1,9 +1,6 @@
 package com.jinseong.soft.modules.user.application;
 
-import com.jinseong.soft.modules.user.domain.User;
-import com.jinseong.soft.modules.user.domain.UserEmailDuplicationException;
-import com.jinseong.soft.modules.user.domain.UserNotFoundException;
-import com.jinseong.soft.modules.user.domain.UserRepository;
+import com.jinseong.soft.modules.user.domain.*;
 import com.jinseong.soft.modules.user.dto.UserRegistrationData;
 import com.jinseong.soft.modules.user.dto.UserUpdateData;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 유저에 대한 비즈니스 로직을 제공합니다.
@@ -94,6 +92,33 @@ public class UserService implements UserDetailsService {
     private User findUser(Long id) {
         return userRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    /**
+     * 전발답은 유저이름과 일치하는 유저를 반환합니다.
+     *
+     * @param username 유저 이름
+     * @return 유저
+     */
+    public User findByUsername(String username) {
+        return userRepository.findByNameAndDeletedIsFalse(username)
+                .orElseThrow(() -> new UserNameNotFoundException(username));
+    }
+
+    public boolean isExistUserName(String username) {
+        return userRepository.existsByName(username);
+    }
+
+    /**
+     * 존재하는 모든 유저의 이름을 반환합니다.
+     *
+     * @return 유저 이름 목록
+     */
+    public List<String> getUserNames() {
+        return userRepository.findAll()
+                .stream()
+                .map(User::getName)
+                .collect(Collectors.toList());
     }
 
     /**

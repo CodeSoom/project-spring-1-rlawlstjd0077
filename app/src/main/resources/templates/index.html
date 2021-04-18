@@ -19,28 +19,44 @@
         <table class="table table-horizontal table-bordered">
             <thead class="thead-strong">
             <tr>
-                <th width="30%">링크 제목</th>
+                <th width="28%">링크 제목</th>
                 <th width="14%">링크 URL</th>
                 <th width="9%">카테고리
-                    <div id="category-filter" class="chips chips-placeholder"></div>
+                    <div id="category-filter" class="chips chips-placeholder">
+
+                    </div>
+                    <div id="category-init" hidden th:each="category : ${categories}">
+                        <input type="hidden" th:value="${category}"/>
+                    </div>
                 </th>
                 <th width="9%">타입
                     <div id="type-filter" class="chips chips-placeholder"></div>
+                    <div id="type-init" hidden th:each="type : ${types}">
+                        <input type="hidden" th:value="${type}"/>
+                    </div>
                 </th>
                 <th width="20%">태그
                     <div id="tag-filter" class="chips chips-placeholder"></div>
+                    <div id="tag-init" hidden th:each="tag : ${tags}">
+                        <input type="hidden" th:value="${tag}"/>
+                    </div>
                 </th>
-                <th width="6%">등록 유저</th>
-                <th width="5%"></th>
-                <th width="7%"></th>
+                <th width="6%">등록 유저
+                    <div id="user-filter" class="chips chips-placeholder"></div>
+                    <div id="user-init" hidden th:each="user : ${users}">
+                        <input type="hidden" th:value="${user}">
+                    </div>
+                </th>
+                <th width="6%"></th>
+                <th width="8%"></th>
             </tr>
             </thead>
             <tbody id="tbody">
-            <tr th:each="link : ${links}">
+            <tr th:each="link : ${links.content}">
                 <td id="id" hidden th:value="${link.id}"></td>
                 <td>
                     <span th:text="${link.title}"></span>
-                    <a class="waves-effect waves-teal btn-flat modal-trigger" href="#modal-description">
+                    <a class="waves-effect waves-teal btn-flat modal-trigger">
                         <input type="hidden" id="update-id" name="update-id" value="3487">
                         <i class="material-icons">description</i>
                     </a>
@@ -61,14 +77,14 @@
                     <div class="chip" style="background-color:#EE8321">[[${link.user}]]</div>
                 </td>
 
-                <td>
+                <td style="text-align: center; vertical-align: middle;">
                     <button class="btn-secondary like-review" style="display: inline;">
                         <i class="fa fa-heart" aria-hidden="true"></i>
                         <span id="counter">[[${link.likes}]]</span>
                     </button>
                 </td>
 
-                <td>
+                <td style="text-align: center; vertical-align: middle;">
                     <span th:if="${user}">
                         <span th:if="${link.user == user}">
                             <a id="btn-update" class="waves-effect waves-teal btn-flat">
@@ -86,18 +102,15 @@
             </tbody>
         </table>
     </div>
+    <ul class="pagination" style="display: flex; justify-content: center;">
+        <li th:class="${pageNumber==links.number + 1} ? active : waves-effect"
+            th:each="pageNumber : ${pageNumbers}">
+            <a class="btn-pagination" th:text=${pageNumber}></a>
+            <input id="page-value" type="hidden" th:value="|/?size=${links.size}&page=${pageNumber}|">
+        </li>
+    </ul>
 </div>
-<!-- Modal Structure -->
-<div id="modal-description" class="modal">
-    <div class="modal-content">
-        <h4>Modal Header</h4>
-        <p>A bunch of text</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-</div>
+</body>
 <script src="/js/app/index.js"></script>
 <link rel="stylesheet" href="/css/index.css">
-</body>
 </html>

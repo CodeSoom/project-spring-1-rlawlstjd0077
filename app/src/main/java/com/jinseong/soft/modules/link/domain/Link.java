@@ -6,14 +6,19 @@ import com.jinseong.soft.modules.like.domain.Like;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.type.domain.Type;
 import com.jinseong.soft.modules.user.domain.User;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * 링크 정보
@@ -93,5 +98,12 @@ public class Link extends DateAudit {
 
     public void setCreatedUser(User user) {
         this.createdUser = user;
+    }
+
+    public Set<Like> getLikes() {
+        if (likes == null) {
+            likes = new HashSet<>();
+        }
+        return likes;
     }
 }
