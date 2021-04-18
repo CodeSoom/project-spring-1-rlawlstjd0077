@@ -8,6 +8,7 @@ import com.jinseong.soft.modules.link.domain.Link;
 import com.jinseong.soft.modules.link.domain.LinkNotFoundException;
 import com.jinseong.soft.modules.link.domain.LinkRepository;
 import com.jinseong.soft.modules.link.dto.LinkRequestData;
+import com.jinseong.soft.modules.main.dto.LinkFilterData;
 import com.jinseong.soft.modules.tag.application.TagService;
 import com.jinseong.soft.modules.tag.domain.Tag;
 import com.jinseong.soft.modules.type.application.TypeService;
@@ -36,17 +37,20 @@ public class LinkService {
     private final TypeService typeService;
     private final TagService tagService;
     private final LikeRepository likeRepository;
+    private final LinkFilterProvider linkFilterProvider;
 
     public LinkService(LinkRepository linkRepository,
                        CategoryService categoryService,
                        TypeService typeService,
                        TagService tagService,
-                       LikeRepository likeRepository) {
+                       LikeRepository likeRepository,
+                       LinkFilterProvider linkFilterProvider) {
         this.linkRepository = linkRepository;
         this.categoryService = categoryService;
         this.typeService = typeService;
         this.tagService = tagService;
         this.likeRepository = likeRepository;
+        this.linkFilterProvider = linkFilterProvider;
     }
 
     /**
@@ -58,13 +62,18 @@ public class LinkService {
         return linkRepository.findAll();
     }
 
-    public Page<Link> getLinks(Pageable pageable) {
+    public Page<Link> getLinks(
+            Pageable pageable,
+            LinkFilterData filterData
+    ) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
 
         List<Link> links;
         List<Link> allLinks = linkRepository.findAll();
+
+        allLinks = linkFilterProvider.filterLinks(allLinks, filterData);
 
         if (allLinks.size() < startItem) {
             links = Collections.emptyList();
@@ -189,6 +198,7 @@ public class LinkService {
                 .tags(tags)
                 .build();
     }
+
 
     /**
      * 대응되는 식별자와 일치하는 링크를 반환합니다.
