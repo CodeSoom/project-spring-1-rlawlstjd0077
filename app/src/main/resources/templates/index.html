@@ -102,14 +102,13 @@
             </tbody>
         </table>
     </div>
-    <div class="center">
-        <span class="pagination"
-              th:each="pageNumber : ${pageNumbers}">
-            <a th:href="@{/(size=${links.size}, page=${pageNumber})}"
-               th:text=${pageNumber}
-               th:class="${pageNumber==links.number + 1} ? active"></a>
-        </span>
-    </div>
+    <ul class="pagination" style="display: flex; justify-content: center;">
+        <li th:class="${pageNumber==links.number + 1} ? active : waves-effect"
+            th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/(size=${links.size}, page=${pageNumber})}" th:text=${pageNumber}>
+            </a>
+        </li>
+    </ul>
 </div>
 </body>
 <script src="/js/app/index.js"></script>
